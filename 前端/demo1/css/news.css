@@ -1,0 +1,29 @@
+h1{
+    color: rgb(77,79,83)
+}
+a{
+    color: #968d92;
+    /* 去掉蓝色下划线 */
+    text-decoration: none;
+}
+#tail{
+    color: #968d92;
+    font-size: 13px;
+}   
+p{
+    /* 首行缩进两字符 */
+    text-indent: 2em;
+
+    line-height: 2;
+}
+#edit{
+    /* 右对齐 */
+    text-align: right;
+    color: #968d92;
+    font-size: 13px;
+}  
+
+#alltext{
+    width: 61%;;
+    margin: 0% auto 0% auto;
+}
