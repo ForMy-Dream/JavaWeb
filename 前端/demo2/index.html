@@ -6,6 +6,48 @@
     <title>Document</title>
 </head>
 <body>
-    
-</body>
+    <img id="img1" src="../resource/JS&VUE/图片素材/off.gif" alt="">
+    <div>传智教育</div>
+    <div>黑马程序猿</div>
+    <input type="checkbox" value="1" name="hobby">电影
+    <input type="checkbox" value="2" name="hobby">旅游
+    <input type="checkbox" value="3" name="hobby">游戏
+    <button id="btn" type="button">切换</button>
+
+    <script>
+        // 页面加载时保存原始内容
+        window.onload = function() {
+            let divs = document.getElementsByTagName("div");
+            for (let i = 0; i < divs.length; i++) {
+                divs[i].setAttribute('data-original-content', divs[i].innerHTML);
+            }
+        };
+
+        document.getElementById("btn").onclick = function() {
+            let img = document.getElementById("img1");
+            if (img.src.indexOf("off") != -1) {
+                img.src = "../resource/JS&VUE/图片素材/on.gif";
+            } else {
+                img.src = "../resource/JS&VUE/图片素材/off.gif";
+            }
+
+            // 切换复选框状态
+            let hobby = document.getElementsByName("hobby");
+            for (let i = 0; i < hobby.length; i++) {
+                hobby[i].checked = !hobby[i].checked;
+            }
+
+            // 处理 div 内容
+            let divs = document.getElementsByTagName("div");
+            for (let i = 0; i < divs.length; i++) {
+                let divContent = divs[i].innerHTML;
+                let originalContent = divs[i].getAttribute('data-original-content');
+                if (divContent.indexOf("芜湖起飞！") == -1) {
+                    divs[i].innerHTML += "<font color='red'>芜湖起飞！</font>";
+                } else {
+                    divs[i].innerHTML = originalContent;
+                }
+            }
+        };
+    </script>
 </html>

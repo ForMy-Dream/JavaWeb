@@ -511,7 +511,7 @@ JavaScript函数通过function关键字进行定义，语法为：
 //方式一
 function 函数名(参数1,参数2...){
     //要执行的代码
-}
+};
 //方式二
 let 函数名=function(参数1,参数2...){
     //要执行的代码
@@ -612,6 +612,239 @@ indexOf（）：检索字符串，入参为字符串，出参为索引值，不�
 trim（）：去除字符串左右两侧的空格，中间的空格不会去除
 
 substring（）：提取字符串中两个指定的索引号之间的字符，包前不包后，[start,end)
+
+#### JavaScript自定义对象
+
+定义格式：
+
+```javascript
+var 对象名={
+    属性名1:属性值1,
+    属性名2:属性值2,
+    属性名3:属性值3,
+    函数名称:function(形参列表){
+        
+    }
+};
+```
+
+实例：
+
+```javascript
+var user={
+    name:"Tom",
+    age=20,
+    gender="male",
+    eat:function(){
+        alert("函数方法！");
+    }
+	eats(){
+        alert("简写方法！")
+    }
+};
+```
+
+调用格式：
+
+对象名.属性名；					``console.log(user.name)``
+
+对象名.函数名();					``user.eat();``
+
+#### JSON
+
+Json（JavaScript Object Notation）JavaScript对象标记法
+
+JSON是通过JavaScript对象标记书写的文本
+
+由于其语法简单，层次结构鲜明，现多用于作为数据载体，在网络中进行数据传输
+
+JSON基础语法
+
+定义：  ``let 变量名='{"key1":value1,"key2":value2}'``
+
+示例：
+
+```javascript
+let userStr='{
+    "name":"Tom"，
+    "age":12,
+    "gender":"male"
+}'
+```
+
+value的数据类型为：数字（整数或浮点数）、字符串（在双引号中）、逻辑值（true或false）、数组（在方括号中[]）、对象（在花括号中{}）、null
+
+JSON字符串转JS对象
+
+``let jsObj=JSON.parse(userStr);``
+
+JS对象转JSON字符串
+
+``let jsonStr=JSON.stringify(jsObj);``
+
+#### BOM
+
+BOM（Browser Object Model）浏览器对象模型，运行JavaScript与浏览器对话，JavaScript将浏览器的各自组成部分封装为对象
+
+组成：
+
+​	Window：浏览器窗口对象
+
+​	Navigator：浏览器对象
+
+​	Screen：屏幕对象
+
+​	History：历史记录对象
+
+​	Location：地址栏对象
+
+##### Window
+
+介绍：浏览器窗口对象
+
+获取：直接使用window，其中，window.可以省略 ``window.alert("msg")``可以简写为``alert("msg")``
+
+属性：
+
+​	history：对History对象的只读引用 
+
+​	location：用于窗口或框架的Location对象
+
+​	navigator：对Navigator对象的只读引用
+
+方法：
+
+​	alert（）：显示带有一段消息和一个确认按钮的警告框
+
+​	confirm（）：显示带有一段信息以及确认按钮和取消按钮的对话框，返回值为true或false
+
+​	setInterval（）：按照指定的周期（以毫秒计）来调用函数或计算表达式，两个参数，第一个是函数名（或者直接定义一个），第二	个是时间，单位为毫秒。即多少时间调用一次函数，只要满足条件就会一直调用
+
+​	setTimeout（）：在指定的毫秒数后调用函数或计算表达式，参数和上面的一样，但是这个只会调用一次函数
+
+##### Location
+
+介绍：地址栏对象
+
+获取：使用Window.location获取，其中Window.可以省略
+
+``window.location.属性``可简化为：``location.属性``
+
+属性：
+
+​	href：设置或返回完整的URL	``location.href="https://baidu.com" ``设置了之后，会重定向跳转到这个网址
+
+#### DOM
+
+DOM（Document Object Model），文档对象模型
+
+DOM是W3C（万维网联盟）的标准，定义了访问HTML和XML文档的标准，分为三个不同部分
+
+1、Core DOM-所有文档类型的标准模型
+
+将标记语言的各个组成部分封装成对象的对象：
+	Document：整个文档的对象
+
+​	Element：元素对象，即各种标签
+
+​	Attribute：属性对象，标签里的属性
+
+​	Text：文本对象，标签里的文本
+
+​	Comment：注释对象
+
+2、XML DOM-XML文档的标准模型
+
+3、HTML DOM-HTML文档的标准模型
+
+​	Image：< img>
+
+​	Button：< input type='button'>
+
+DOM树示例如下：
+
+![image-20241223163752858](D:\JAVA\JavaWeb\笔记图片\image-20241223163752858-1734943075241-1-1734943082370-3.png)
+
+JavaScript通过DOM，就能够对HTML进行操作：
+
+​	改变HTML元素的内容
+
+​	改变HTML元素的样式（CSS）
+
+​	对HTML DOM时间做出反应
+
+​	添加和删除HTML元素
+
+##### DOM对象获取
+
+HTML中的Element对象可以通过Document对象获取，而Document对象是通过window对象获取的
+
+Document对象中提供了以下获取Element元素对象的函数：
+
+1、根据id属性值获取，返回单个Element对象
+
+``let h1=document.getElemengById("h1")``
+
+2、根据标签名称获取，返回Element对象数组
+
+``let divs=document.getElementsTagName('div')``
+
+3、根据name属性值获取，返回Element对象数组
+
+``let hobbys=document.getElementByName('hobby')``
+
+4、根据class属性值获取，返回Element对象数组
+
+``let clss =document.getElementsByClassName('cls')``
+
+#### 事件监听
+
+事件：HTML事件是发生在HTML元素上的“事情”，如：
+
+​	按钮被点击
+
+​	鼠标移动到元素上
+
+​	按下键盘按键
+
+事件监听：JavaScript可以在事件被侦测到的时候执行代码
+
+事件绑定：
+
+方式一：通过HTMl标签中的时间属性进行绑定
+
+方式二：通过DOM元素属性绑定
+
+```html
+<body>
+    <input type="button" onclick="on()" value="按钮1">
+    <input id="btn" type="button"  value="按钮2">
+</body>
+<script>
+    function on(){
+        alert("点击了按钮1")
+    };
+    document.getElementById("btn").onclick = function(){
+        alert("点击了按钮2")
+    }
+```
+
+常见事件：
+
+| 事件名      | 说明                     |
+| ----------- | ------------------------ |
+| onclick     | 鼠标单击事件             |
+| onblur      | 元素失去焦点             |
+| onfocus     | 元素获得焦点             |
+| onload      | 某个页面或图像被完成加载 |
+| onsubmit    | 当表单提交时触发该事件   |
+| onkeydown   | 某个键盘的键被按下       |
+| onmouseover | 鼠标被移到某元素之上     |
+| onmouseout  | 鼠标从某元素移开         |
+
+
+
+
 
 
 
