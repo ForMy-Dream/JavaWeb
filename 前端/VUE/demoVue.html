@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!-- v-bind和v-model -->
+    <div id="app">
+        <a :href="url">链接1</a>
+        <input type="text" v-model="url" >
+        <button  @click="btn1">按钮1</button><br>
+        <input v-model="age" type="text" name="" id="">
+        <span v-if="age<=25">少年</span>
+        <span v-else-if="age>25&&age<40">青年</span>
+        <span v-else="age>=40">老年</span>
+        <div v-for="(item,index) in addrs">
+            <table>
+                <tr>
+                    <td>{{index+1}}</td>
+                    <td>{{item}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+<script>
+   new Vue({
+       el:"#app",
+       data:{
+           msg:"hello vue",
+           url:"https://www.baidu.com",
+           age:10,
+           addrs:['芜湖','合肥', '宿州','池州']
+       },
+       methods: {
+        btn1(){
+            alert("按钮1被点击了")
+        }
+       }
+   })
+</script>
+</html>

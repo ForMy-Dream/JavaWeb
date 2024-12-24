@@ -5,16 +5,40 @@
     <meta name="viewport" content="width=in, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body onload="load()">
+    <form action="" onsubmit="fSubmit()">
+    <label>用户名：</label><input type="text" name="username" onblur="fOnblur()" onfocus="fOnfocus()"><br>
+    
+    <input type="submit" value="提交" >
+</form>
+<img src="../resource/img/huawei.jpg" onmouseout="onMouseout()"  onmouseover="onMouseover()" alt="">
     <input type="button" onclick="on()" value="按钮1">
     <input id="btn" type="button"  value="按钮2">
 </body>
 <script>
+    function load(){
+        alert("页面加载完毕")
+    };
     function on(){
         alert("点击了按钮1")
     };
     document.getElementById("btn").onclick = function(){
         alert("点击了按钮2")
-    }
+    };
+    function fSubmit(){
+        alert("提交了表单")
+    };
+    function fOnblur(){
+        console.log("失去焦点了")
+    };
+    function fOnfocus(){
+        console.log("获得焦点了")
+    };
+    function onMouseout(){
+        console.log("鼠标移开了")
+    };
+    function onMouseover(){
+        console.log("鼠标移入了")
+    };
 </script>
 </html>

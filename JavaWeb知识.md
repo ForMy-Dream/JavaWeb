@@ -816,17 +816,50 @@ Document对象中提供了以下获取Element元素对象的函数：
 方式二：通过DOM元素属性绑定
 
 ```html
-<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=in, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body onload="load()">
+    <form action="" onsubmit="fSubmit()">
+    <label>用户名：</label><input type="text" name="username" onblur="fOnblur()" onfocus="fOnfocus()"><br>
+    
+    <input type="submit" value="提交" >
+</form>
+<img src="../resource/img/huawei.jpg" onmouseout="onMouseout()"  onmouseover="onMouseover()" alt="">
     <input type="button" onclick="on()" value="按钮1">
     <input id="btn" type="button"  value="按钮2">
 </body>
 <script>
+    function load(){
+        alert("页面加载完毕")
+    };
     function on(){
         alert("点击了按钮1")
     };
     document.getElementById("btn").onclick = function(){
         alert("点击了按钮2")
-    }
+    };
+    function fSubmit(){
+        alert("提交了表单")
+    };
+    function fOnblur(){
+        console.log("失去焦点了")
+    };
+    function fOnfocus(){
+        console.log("获得焦点了")
+    };
+    function onMouseout(){
+        console.log("鼠标移开了")
+    };
+    function onMouseover(){
+        console.log("鼠标移入了")
+    };
+</script>
+</html>
 ```
 
 常见事件：
@@ -841,6 +874,456 @@ Document对象中提供了以下获取Element元素对象的函数：
 | onkeydown   | 某个键盘的键被按下       |
 | onmouseover | 鼠标被移到某元素之上     |
 | onmouseout  | 鼠标从某元素移开         |
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <img id="img1" src="../resource/JS&VUE/图片素材/off.gif" alt="">
+    <div>赣神魔</div>
+    <div>小老板</div>
+    <input type="checkbox" value="1" name="hobby">电影
+    <input type="checkbox" value="2" name="hobby">旅游
+    <input type="checkbox" value="3" name="hobby">游戏
+    <button id="btn" type="button">切换</button>
+    <input type="text" name="box" id="box" value="HELLO" onblur="fOnblur()" onfocus="fOnfocus()">
+    <script>
+        function fOnblur(){
+            //转换成小写
+            document.getElementById("box").value = document.getElementById("box").value.toLowerCase()
+        };
+        function fOnfocus(){
+            //转换成大写
+
+            document.getElementById("box").value = document.getElementById("box").value.toUpperCase()
+       
+        };
+        // 页面加载时保存原始内容
+        window.onload = function() {
+            let divs = document.getElementsByTagName("div");
+            for (let i = 0; i < divs.length; i++) {
+                divs[i].setAttribute('data-original-content', divs[i].innerHTML);
+            }
+        };
+
+        document.getElementById("btn").onclick = function() {
+            let img = document.getElementById("img1");
+            if (img.src.indexOf("off") != -1) {
+                img.src = "../resource/JS&VUE/图片素材/on.gif";
+            } else {
+                img.src = "../resource/JS&VUE/图片素材/off.gif";
+            }
+
+            // 切换复选框状态
+            let hobby = document.getElementsByName("hobby");
+            for (let i = 0; i < hobby.length; i++) {
+                hobby[i].checked = !hobby[i].checked;
+            }
+
+            // 处理 div 内容
+            let divs = document.getElementsByTagName("div");
+            for (let i = 0; i < divs.length; i++) {
+                let divContent = divs[i].innerHTML;
+                let originalContent = divs[i].getAttribute('data-original-content');
+                if (divContent.indexOf("芜湖起飞！") == -1) {
+                    divs[i].innerHTML += "<font color='red'>芜湖起飞！</font>";
+                } else {
+                    divs[i].innerHTML = originalContent;
+                }
+            }
+        };
+    </script>
+</html>
+```
+
+### Vue
+
+Vue是一套前端框架，免除原生JavaScript中的DOM操作，简化书写
+
+基于MVVM（Model-View-ViewModel）思想，实现数据的双向绑定，将编程的关注点放在数据上
+
+框架：是一个半成品软件，是一套可重用的、通用的、软件基础代码模型，基于框架进行开发，更加快捷高效
+
+[介绍 — Vue.js](https://v2.cn.vuejs.org/v2/guide/)这是Vue2的地址
+
+快速入门
+
+1、引入Vue.js文件
+
+2、在JS代码区域，创建Vue核心对象，定义数据模型
+
+3、编写视图
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+    <input type="text" v-model="msg">
+
+    {{msg}}
+</div>
+</body> 
+<script>
+    new Vue({
+       el:"#app",
+       data:{
+           msg:"hello vue"
+       }
+   })
+</script>
+</html>
+```
+
+#### 插值表达式
+
+形式： {{表达式}}
+
+内容可以是：
+
+​	变量
+
+​	三元运算符
+
+​	函数调用
+
+​	算术运算
+
+#### 常用指令
+
+指令：在HTML标签上带有v-前缀的特殊属性，不同的指令具有不同含义，例如：v-if、v-for..
+
+| 指令      | 作用                                                         |
+| --------- | ------------------------------------------------------------ |
+| v-bind    | 为HTML标签绑定属性值，如设置href，css样式等，可以直接简写为一个冒号（：） |
+| v-model   | 在表单元素上创建双向数据绑定                                 |
+| v-on      | 为HTML标签绑定事件，可以简写为@符号（@）                     |
+| v-if      |                                                              |
+| v-else-if | 条件性的渲染某元素，判断为true时渲染，否则不渲染             |
+| v-else    |                                                              |
+| v-show    | 根据条件展示某元素，区别在于切换的是display属性的值          |
+| v-for     | 列表渲染，遍历容器的元素或者对象的属性                       |
+
+注意：通过v-bind或者v-model绑定的变量，必须在数据模型中声明
+
+各指令示例：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+    <!-- v-bind和v-model -->
+    <div id="app">
+        <a :href="url">链接1</a>
+        <input type="text" v-model="url" >
+        <button  @click="btn1">按钮1</button><br>
+        <input v-model="age" type="text" name="" id="">
+        <span v-if="age<=25">少年</span>
+        <span v-else-if="age>25&&age<40">青年</span>
+        <span v-else="age>=40">老年</span>
+        <div v-for="(item,index) in addrs">
+            <table>
+                <tr>
+                    <td>{{index+1}}</td>
+                    <td>{{item}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+<script>
+   new Vue({
+       el:"#app",
+       data:{
+           msg:"hello vue",
+           url:"https://www.baidu.com",
+           age:10,
+           addrs:['芜湖','合肥', '宿州','池州']
+       },
+       methods: {
+        btn1(){
+            alert("按钮1被点击了")
+        }
+       }
+   })
+</script>
+</html>
+```
+
+表格测试v-for
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/vue.js"></script>
+    <style>
+    body{
+        text-align: center;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <table border="1px" cellspacing="0" width="500px">
+            <tr>
+                <th>编号</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>分数</th>
+                <th>成绩</th>
+            </tr>
+
+            <tr v-for="(item,index) in list">
+                <td>{{index+1}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.age}}</td>
+                <td>{{item.gender==1?"男":"女"}}</td>
+                <td>{{item.score}}</td>
+                <td v-if="item.score>=60&&item.score<=70">及格</td>
+                <td v-else-if="item.score>70&&item.score<=100">优秀</td>
+                <td v-else="item.score<60" style="color: red;">不及格</td>
+            </tr>
+
+        </table>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            list: [{
+                name: "张三",
+                age: 20,
+                gender: 1,
+                score: 88
+            }, {
+                name: "李四",
+                age: 20,
+                gender: 1,
+                score: 69
+            }, {
+                name: "网二",
+                age: 29,
+                gender: 1,
+                score: 39
+            }, {
+                name: "芜湖",
+                age: 26,
+                gender: 0,
+                score: 11
+            }, {
+                name: "六五",
+                age: 18,
+                gender: 1,
+                score: 98
+            },
+            ]
+        }
+    })
+</script>
+
+</html>
+```
+
+#### 生命周期
+
+指一个对象从创建到销毁的整个过程
+
+生命周期的八个阶段：每出发一个生命周期时间，会自动执行一个生命周期方法（钩子）
+
+| 状态          | 阶段周期   |
+| ------------- | ---------- |
+| beforeCreate  | 创建前     |
+| create        | 创建后     |
+| beforeMount   | 挂载前     |
+| mounted       | 挂载完成后 |
+| beforeUpdate  | 更新前     |
+| updated       | 更新后     |
+| beforeDestroy | 销毁前     |
+| destroyed     | 销毁后     |
+
+![image-20241224151149402](D:\JAVA\JavaWeb\笔记图片\image-20241224151149402-1735024315041-1.png)
+
+一般常用mounted：挂载完成，Vue初始化成功，HTML页面渲染成功（发送请求到服务端，加载数据）
+
+### Ajax
+
+Ajax（Asynchronous JavaScript And XML），异步的JavaScript和XML
+
+作用：
+
+​	数据交换：通过Ajax可以给服务器发送请求，并获取服务器响应的数据
+
+​	异步交互：可以在不重新加载整个页面的情况下，与服务器交换数据并更新部分网页的技术，如：搜索联想，用户名校验等
+
+#### 原生Ajax
+
+原生Ajax较为繁琐，步骤为：
+
+​	1、创建XMLHttpRequest对象：用于和服务器交换数据
+
+​	2、向服务器发送请求
+
+​	3、获取服务器响应数据
+
+![image-20241224155253380](D:\JAVA\JavaWeb\笔记图片\image-20241224155253380-1735026779036-4-1735026798727-6.png)
+
+### Axios
+
+Axios是对原生的Ajax进行了封装，简化书写，快速开发
+
+一个api，可以用来测试：[jsonplaceholder.typicode.com/users](https://jsonplaceholder.typicode.com/users)
+
+[Axios中文文档 | Axios中文网](https://www.axios-http.cn/)
+
+#### Axios快速入门
+
+1、引入Axios的Js文件
+
+```html
+<script src="./js/axios-0.18.0.js"></script>
+```
+
+2、使用Axios发送请求，并获取响应结果
+
+```html
+<script>
+axios({
+    method:"get",
+    url:"地址"
+}).then((r)=>{
+    console.log(r.data)
+});
+axios({
+    method:"post",
+    url:"地址",
+    data:{
+        数据：JSON格式  
+    }//或者data:"id=1"类似这种单个参数
+}).then((r)=>{
+    console.log(r.data)
+})
+</script>
+```
+
+#### 请求方法别名
+
+axios.get（url[ ,config]）
+
+axios.delete（url[ ,config]）
+
+axios.post（url[ ,data,config]）
+
+axios.put（url[ ,data,config]）
+
+方括号里面内容是可选的
+
+```html
+<script>
+	axios.get("地址").then((r)=>{
+        console.log(r.data)
+    });
+    axios.post("地址",'参数').then((r)=>{
+        console.log(r.data)
+    })
+</script>
+```
+
+示例
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/axios-0.18.0.js"></script>
+</head>
+<body>
+    <input type="button" value="获取get" onclick="get()">
+    <input type="button" value="获取post" onclick="post()"><br>
+    <div id="d"></div>
+</body>
+<script>
+    let divInfo = document.getElementById("d");
+
+    function get() {
+        axios.get("https://jsonplaceholder.typicode.com/users").then(function(response) {
+            console.log(response.data);
+            let html = response.data.map(user => `<p>ID: ${user.id}, Name: ${user.name}, Email: ${user.email}</p>`).join('');
+            divInfo.innerHTML = html;
+        }).catch(function(error) {
+            console.error('There was an error!', error);
+        });
+        /* axios({
+            method: "get",
+            url: "https://jsonplaceholder.typicode.com/users"
+        }).then(function(response) {
+            console.log(response.data);
+            let html = response.data.map(user => `<p>ID: ${user.id}, Name: ${user.name}, Email: ${user.email}</p>`).join('');
+            divInfo.innerHTML = html;
+        }).catch(function(error) {
+            console.error('There was an error!', error);
+        }); */
+    };
+    let param={
+        name: 'John Doe',
+        email: 'john.doe@example.com'
+    }
+    function post() {
+        axios.post("https://jsonplaceholder.typicode.com/users", param).then(function(response) {
+            console.log(response.data);
+            divInfo.innerHTML = `<p>ID: ${response.data.id}, Name: ${response.data.name}, Email: ${response.data.email}</p>`;
+        }).catch(function(error) {
+            console.error('There was an error!', error);
+        });
+        
+        /* axios({
+            method: "post",
+            url: "https://jsonplaceholder.typicode.com/users",
+            data: {
+                name: 'John Doe',
+                email: 'john.doe@example.com'
+            }
+        }).then(function(response) {
+            console.log(response.data);
+            divInfo.innerHTML = `<p>ID: ${response.data.id}, Name: ${response.data.name}, Email: ${response.data.email}</p>`;
+        }).catch(function(error) {
+            console.error('There was an error!', error);
+        }); */
+    }
+</script>
+</html>
+```
+
+
+
+
 
 
 

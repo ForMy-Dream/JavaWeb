@@ -7,14 +7,24 @@
 </head>
 <body>
     <img id="img1" src="../resource/JS&VUE/图片素材/off.gif" alt="">
-    <div>传智教育</div>
-    <div>黑马程序猿</div>
+    <div>赣神魔</div>
+    <div>小老板</div>
     <input type="checkbox" value="1" name="hobby">电影
     <input type="checkbox" value="2" name="hobby">旅游
     <input type="checkbox" value="3" name="hobby">游戏
     <button id="btn" type="button">切换</button>
-
+    <input type="text" name="box" id="box" value="HELLO" onblur="fOnblur()" onfocus="fOnfocus()">
     <script>
+        function fOnblur(){
+            //转换成小写
+            document.getElementById("box").value = document.getElementById("box").value.toLowerCase()
+        };
+        function fOnfocus(){
+            //转换成大写
+
+            document.getElementById("box").value = document.getElementById("box").value.toUpperCase()
+       
+        };
         // 页面加载时保存原始内容
         window.onload = function() {
             let divs = document.getElementsByTagName("div");

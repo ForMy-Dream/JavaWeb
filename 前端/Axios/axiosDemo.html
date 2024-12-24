@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/axios-0.18.0.js"></script>
+</head>
+<body>
+    <input type="button" value="获取get" onclick="get()">
+    <input type="button" value="获取post" onclick="post()"><br>
+    <div id="d"></div>
+</body>
+<script>
+    let divInfo = document.getElementById("d");
+
+    function get() {
+        axios.get("https://jsonplaceholder.typicode.com/users").then(function(response) {
+            console.log(response.data);
+            let html = response.data.map(user => `<p>ID: ${user.id}, Name: ${user.name}, Email: ${user.email}</p>`).join('');
+            divInfo.innerHTML = html;
+        }).catch(function(error) {
+            console.error('There was an error!', error);
+        });
+        /* axios({
+            method: "get",
+            url: "https://jsonplaceholder.typicode.com/users"
+        }).then(function(response) {
+            console.log(response.data);
+            let html = response.data.map(user => `<p>ID: ${user.id}, Name: ${user.name}, Email: ${user.email}</p>`).join('');
+            divInfo.innerHTML = html;
+        }).catch(function(error) {
+            console.error('There was an error!', error);
+        }); */
+    };
+    let param={
+        name: 'John Doe',
+        email: 'john.doe@example.com'
+    }
+    function post() {
+        axios.post("https://jsonplaceholder.typicode.com/users", param).then(function(response) {
+            console.log(response.data);
+            divInfo.innerHTML = `<p>ID: ${response.data.id}, Name: ${response.data.name}, Email: ${response.data.email}</p>`;
+        }).catch(function(error) {
+            console.error('There was an error!', error);
+        });
+        
+        /* axios({
+            method: "post",
+            url: "https://jsonplaceholder.typicode.com/users",
+            data: {
+                name: 'John Doe',
+                email: 'john.doe@example.com'
+            }
+        }).then(function(response) {
+            console.log(response.data);
+            divInfo.innerHTML = `<p>ID: ${response.data.id}, Name: ${response.data.name}, Email: ${response.data.email}</p>`;
+        }).catch(function(error) {
+            console.error('There was an error!', error);
+        }); */
+    }
+</script>
+</html>
