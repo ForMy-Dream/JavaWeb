@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../VUE/js/vue.js"></script>
+    <script src="./js/axios-0.18.0.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <table border="1px"  cellspacing="0">
+            <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>用户名</th>
+                <th>邮箱</th>
+                <th>地址</th>
+                <th>手机号</th>
+            </tr>
+            <tr v-for="(item, index) in users">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.username}}</td>
+                <td>{{item.email}}</td>
+                <td>{{item.address.street}}</td>
+                <td>{{item.phone}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            users:[]
+        },
+        mounted () {
+            this.getData();
+        },
+        methods: {
+            getData(){
+                axios.get("https://jsonplaceholder.typicode.com/users").then((r) => {
+                    this.users = r.data;    
+                }).catch((err) => {
+                    
+                });
+            }
+        }
+    })
+</script>
+<style>
+    body{
+        text-align: center;
+    }
+</style>
+
+</html>
