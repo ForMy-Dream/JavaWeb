@@ -5,23 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d816790-db98-4f9b-ad7f-0e4706bdf326" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/babel.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/jsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/public/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/public/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/src/App.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/src/assets/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/src/components/HelloWorld.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/src/main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/src/router/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/src/views/AboutView.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/src/views/HomeView.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/vue.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/前端/Axios/demo.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/JavaWeb知识.md" beforeDir="false" afterPath="$PROJECT_DIR$/JavaWeb知识.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,6 +40,10 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
@@ -73,6 +61,7 @@
       <updated>1734573898945</updated>
       <workItem from="1734573902005" duration="62000" />
       <workItem from="1735195896534" duration="176000" />
+      <workItem from="1735198694351" duration="612000" />
     </task>
     <servers />
   </component>

@@ -1420,6 +1420,139 @@ Vue-cli提供了如下功能：
 
 参考这个来搭建依赖环境
 
+#### Vue的创建
+
+找到对应的目录，cmd进入命令行，输入 ``vue  ui``即可打开图形化页面来进行xue项目的创建和管理
+
+Vue的目录结构
+
+![image-20241226160104313](D:\JAVA\JavaWeb\笔记图片\image-20241226160104313.png)
+
+想要运行该项目，对应目录下进入命令行，运行``npm run serve``即可运行，在运行状态下，如果修改了Vue的文件，会自动更新显示到页面上，这就是vue的热部署
+
+#### Vue发布端口修改
+
+修改最外层的vue.config.js文件
+
+改为：
+
+```javascript
+const { defineConfig } = require('@vue/cli-service')
+module.exports = defineConfig({
+  transpileDependencies: true,
+    //修改端口号
+  devServer: {
+    port: 9999
+  }
+})
+
+```
+
+#### Element-UI
+
+Element：是饿了么团队研发的，一套为开发者、设计师和产品经理准备的基于Vue2.0的桌面端组件库
+
+组件：组成网页的部件，例如：超链接、按钮、图片、表单、表格、分页条等等
+
+官网：[Element - 网站快速成型工具](https://element.eleme.cn/#/zh-CN)
+
+当然不止这一个组件库，还有其他很多开源的，也可以自由选择
+
+##### 快速使用
+
+安装ElementUI组件库（在当前工程的目录下），命令行执行
+
+``npm install element-ui@2.15.3``
+
+src目录下的main.js中引入ElementUI组件库
+
+```javascript
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import ElementUI from 'element-ui';//ElementUI引入
+import 'element-ui/lib/theme-chalk/index.css';//ElementUI引入
+
+
+Vue.config.productionTip = false
+Vue.use(ElementUI);//ElementUI引入
+
+new Vue({
+  router,
+  render: h => h(App)
+}).$mount('#app')
+
+```
+
+访问官网，赋值组件代码，调整
+
+示例代码（ElementView.vue）
+
+```vue
+<template>
+    <div>
+        <el-button @click="showmsg2">默认按钮</el-button>
+        <el-button type="primary" @click="showMsg">主要按钮</el-button>
+        <el-table :data="paginatedTableData" stripe style="width: 100%">
+            <el-table-column prop="date" label="日期" width="180"></el-table-column>
+            <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+            <el-table-column prop="address" label="地址"></el-table-column>
+            <el-table-column prop="msg" label="消息"></el-table-column>
+        </el-table>
+        <div class="block">
+            <el-pagination layout="prev, pager, next" :total="tableData.length" :page-size="pageSize"
+                :current-page="currentPage" @current-change="handlePageChange"></el-pagination>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'ElementView',
+    data() {
+        return {
+            tableData: [
+                { date: '2016-05-02', name: '王小虎', address: '上海市普陀区金沙江路 1518 弄', msg: '112' },
+                { date: '2016-05-04', name: '王小虎', address: '上海市普陀区金沙江路 1517 弄', msg: '1122' },
+                { date: '2016-05-01', name: '王小虎', address: '上海市普陀区金沙江路 1519 弄', msg: '11222' },
+                { date: '2016-05-03', name: '王小虎', address: '上海市普陀区金沙江路 1516 弄', msg: '1124' }
+            ],
+            currentPage: 1, // 当前页码
+            pageSize: 2 // 每页显示的条目数
+        }
+    },
+    computed: {
+        paginatedTableData() {
+            const start = (this.currentPage - 1) * this.pageSize;
+            const end = start + this.pageSize;
+            return this.tableData.slice(start, end);
+        }
+    },
+    methods: {
+        showMsg() {
+            alert('主要按钮')
+        },
+        showmsg2() {
+            alert('默认按钮')
+        },
+        handlePageChange(newPage) {
+            this.currentPage = newPage;
+        }
+    }
+}
+</script>
+
+<style scoped></style>
+```
+
+
+
+
+
+
+
+
+
 
 
 
