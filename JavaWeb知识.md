@@ -2,6 +2,12 @@
 
 目前对于web开发，一般采用的是前后端分离，而java程序员主要负责的就是后端的程序开发，前端一般有前端工程师来进行编写（虽然现在大部分都是一个人做，手动滑稽）
 
+理想的开发步骤
+
+需求分析==》接口定义（出API接口文档）==》前后端并行开发（根据api文档）==》测试（前端，后端）==》前后端联调测试
+
+当然，这是理想状态
+
 # 前端
 
 web前端一般负责页面的展示，网页一般由：文字、图片、音频、视频、超链接...组成
@@ -1321,11 +1327,98 @@ axios.put（url[ ,data,config]）
 </html>
 ```
 
+获取数据放到表格中
 
+```html
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../VUE/js/vue.js"></script>
+    <script src="./js/axios-0.18.0.js"></script>
+</head>
 
+<body>
+    <div id="app">
+        <table border="1px"  cellspacing="0">
+            <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>用户名</th>
+                <th>邮箱</th>
+                <th>地址</th>
+                <th>手机号</th>
+            </tr>
+            <tr v-for="(item, index) in users">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.username}}</td>
+                <td>{{item.email}}</td>
+                <td>{{item.address.street}}</td>
+                <td>{{item.phone}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            users:[]
+        },
+        mounted () {
+            this.getData();
+        },
+        methods: {
+            getData(){
+                axios.get("https://jsonplaceholder.typicode.com/users").then((r) => {
+                    this.users = r.data;    
+                }).catch((err) => {
+                    
+                });
+            }
+        }
+    })
+</script>
+<style>
+    body{
+        text-align: center;
+    }
+</style>
 
+</html>
+```
 
+### 前端工程化
+
+指在企业级的前端项目开发中，把前端开发所需的工具、技术、经验等进行规范化、标准化
+
+#### vue-cli
+
+Vue-cli是Vue官方提供的一个脚手架，用于快速生成一个Vue的项目模板
+
+Vue-cli提供了如下功能：
+
+​	统一的目录结构
+
+​	本地调试
+
+​	热部署
+
+​	单元测试
+
+​	集成打包上线
+
+依赖环境：NodeJs
+
+[全网最细！使用nvm管理node（从node卸载到node安装使用一文搞定）nrm管理npm源_node管理-CSDN博客](https://blog.csdn.net/m0_59415345/article/details/141496413)
+
+[Vue-Cli(脚手架)安装及如何创建Vue-Cli项目-保姆级别教程,手把手教会你-CSDN博客](https://blog.csdn.net/m0_72568513/article/details/131123225)
+
+参考这个来搭建依赖环境
 
 
 
