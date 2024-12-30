@@ -1687,7 +1687,7 @@ body{
 </style>
 ```
 
-Vue路由
+### Vue路由
 
 Vue Router：是Vue的官方路由
 
@@ -1713,7 +1713,7 @@ Vue打包部署
 
 部署到Nginx
 
-#### Nginx
+### Nginx
 
 Nginx是一款轻量级的Web服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器，特点是占用内存少，并发能力强
 
@@ -1775,3 +1775,66 @@ Maven是Apache旗下的一个开源项目，是一款用于java项目管理和�
 
 [Maven-安装与环境配置-CSDN博客](https://blog.csdn.net/xhmico/article/details/144596988)详细可以看这个
 
+idea中集成Maven
+
+在最外面所有设置中进行设置，将Maven信息进行添加
+
+![image-20241230160141804](D:\JAVA\JavaWeb\笔记图片\image-20241230160141804.png)
+
+![image-20241230160327596](D:\JAVA\JavaWeb\笔记图片\image-20241230160327596.png)
+
+### Maven坐标
+
+什么是坐标？
+
+​	Maven中的坐标是资源的唯一标识，通过该坐标可以唯一定位资源位置
+
+​	使用坐标来定义项目货引入项目中需要的依赖
+
+Maven坐标主要组成
+
+​	groupId：定义当前Maven项目隶属组织名称（通常是域名反写，如：com.alibaba）
+
+​	artifactId：定义当前Maven项目名称（通常是模块名称，如：order-service、goods-service）
+
+​	version：定义当前项目版本号
+
+```xml
+<groupId>com.alibaba</groupId>
+<artifactId>maven-project01</artifactId>
+<version>1.0</version>
+
+<dependency>
+	<groupId>ch.qos.logback</groupId>
+	<artifactId>logback-classic</artifactId>
+	<version>1.2.3</version>
+</dependency>
+```
+
+### Maven依赖配置
+
+依赖：指当前项目运行所需要的jar包，一个项目中可以引入多个依赖
+
+配置：
+
+​	1、在pom.xml中编写< dependencies>标签
+
+​	2、在< denpendencies>标签中使用< denpendency>引入坐标
+
+​	3、定义坐标的groupId、artifactId、version
+
+​	4、点击刷新按钮，引入最新加入的坐标
+
+```xml
+<dependencies>
+	<dependency>
+		<groupId>ch.qos.logback</groupId>
+		<artifactId>logback-classic</artifactId>
+		<version>1.2.3</version>
+	</dependency>
+</dependencies>
+```
+
+如果引入的依赖，本地仓库没有，将会连接远程仓库/中央仓库，然后下载依赖（过程较为耗时，需耐心等待）
+
+可以在这个网站快速的添加坐标依赖：[Maven Repository: Search/Browse/Explore](https://mvnrepository.com/)
