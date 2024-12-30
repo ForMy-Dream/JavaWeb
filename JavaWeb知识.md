@@ -1687,18 +1687,91 @@ body{
 </style>
 ```
 
+Vue路由
 
+Vue Router：是Vue的官方路由
 
+使用需要安装路由，一般创建项目的时候就有勾选的有，如果没有，则执行命令``npm install vue-router@3.5.1``
 
+组成：
 
+​	VueRouter：路由器类，根据路由请求在路由视图中动态渲染选中的组件
 
+​	``<router-link>``：请求链接组件，浏览器会解析成< a>
 
+​	``<router-view>``：动态视图组件，用来渲染展示与路由路径对应的组件
 
+在router文件夹下的index.js中添加对应的路由信息及路径
 
+在需要跳转的功能点处添加``<router-link>``标签，里面的to属性指向跳转的信息
 
+在App.vue中添加``<router-view></router-view>``
 
+Vue打包部署
 
+在项目目录下执行命令``npm run build``即可将前端项目打包到dist目录下
 
+部署到Nginx
 
+#### Nginx
+
+Nginx是一款轻量级的Web服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器，特点是占用内存少，并发能力强
+
+官网：https://nginx.org/
+
+目录结构如下：
+
+config：配置文件目录
+
+html：静态资源文件目录
+
+logs：日志文件目录
+
+temp：临时文件目录
+
+nginx.exe：Nginx可执行文件，运行nginx
+
+要部署前端工程，一般将生成的dist文件夹内的所有内容复制到html目录下，然后启动Nginx，访问即可，默认80
+
+如果80端口被占用，可以在nginx.config中修改端口号
+
+``netstat -ano|findStr 端口号``用来查询端口是否被占用
 
 # 后端
+
+## Maven
+
+Maven是Apache旗下的一个开源项目，是一款用于java项目管理和构建的工具，基于项目对象模型（POM：Project Object Model）的概率
+
+### Maven的作用
+
+#### 依赖管理
+
+方便快捷的管理项目依赖的资源（jar包），避免版本冲突问题，在pox.xml文件中进行配置
+
+#### 统一项目结构
+
+解决不同开发工具java项目构造结构不同的问题，统一了项目结构
+
+![image-20241230113404182](D:\JAVA\JavaWeb\笔记图片\image-20241230113404182.png)
+
+#### 项目构建
+
+标准跨平台（Windows、Linux、MacOs）的自动化项目构建方式
+
+清理、编译、测试、打包、发布等功能均集成在idea中有体现
+
+### Maven介绍
+
+![image-20241230114351437](D:\JAVA\JavaWeb\笔记图片\image-20241230114351437.png)
+
+优先从本地仓库去获取依赖，根据``<dependency>``中的groupId来寻找，是文件路径，还有版本号等信息也在同一级节点
+
+### Maven安装
+
+1、获取安装包，并解压
+
+下载地址：[Download Apache Maven – Maven](https://maven.apache.org/download.cgi)
+
+[Maven-安装与环境配置-CSDN博客](https://blog.csdn.net/xhmico/article/details/144596988)详细可以看这个
+

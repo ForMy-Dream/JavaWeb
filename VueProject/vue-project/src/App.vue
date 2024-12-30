@@ -1,7 +1,8 @@
 <template>
   <div>
    <!-- <my-button></my-button> -->
-    <emp-view></emp-view>
+    <!-- <emp-view></emp-view> -->
+     <router-view></router-view>
   </div>
 </template>
 
@@ -45,4 +46,4 @@ window.ResizeObserver = class ResizeObserver extends _ResizeObserver{
    }
 }
 </script>
-<style></style>
+<style>

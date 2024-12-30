@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d816790-db98-4f9b-ad7f-0e4706bdf326" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/笔记图片/image-20241230113404182.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/笔记图片/image-20241230114351437.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/JavaWeb知识.md" beforeDir="false" afterPath="$PROJECT_DIR$/JavaWeb知识.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VueProject/vue-project/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/VueProject/vue-project/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VueProject/vue-project/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/VueProject/vue-project/src/router/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,15 +21,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="localRepository" value="D:\mevan\apache-maven-3.8.6\repository" />
-        <option name="mavenHome" value="$PROJECT_DIR$/../../mevan/apache-maven-3.8.6" />
+        <option name="localRepository" value="D:\Maven\mvn_repo" />
+        <option name="mavenHome" value="$PROJECT_DIR$/../../Maven/apache-maven-4.0.0-rc-2" />
         <option name="useMavenConfig" value="true" />
-        <option name="userSettingsFile" value="D:\mevan\apache-maven-3.8.6\conf\settings.xml" />
+        <option name="userSettingsFile" value="D:\Maven\apache-maven-4.0.0-rc-2\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="17" />
+    <option name="vmOptions" value="-DarchetypeCatalog=internal" />
   </component>
   <component name="ProjectId" id="2qPp7HcSMNx6LcjVPHKtZl6GM2p" />
   <component name="ProjectLevelVcsManager">
@@ -47,7 +59,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.runner",
+    "settings.editor.selected.configurable": "MavenSettings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -62,6 +74,7 @@
       <workItem from="1734573902005" duration="62000" />
       <workItem from="1735195896534" duration="176000" />
       <workItem from="1735198694351" duration="612000" />
+      <workItem from="1735538877826" duration="970000" />
     </task>
     <servers />
   </component>
