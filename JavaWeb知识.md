@@ -1838,3 +1838,54 @@ Maven坐标主要组成
 如果引入的依赖，本地仓库没有，将会连接远程仓库/中央仓库，然后下载依赖（过程较为耗时，需耐心等待）
 
 可以在这个网站快速的添加坐标依赖：[Maven Repository: Search/Browse/Explore](https://mvnrepository.com/)
+
+### 依赖传递
+
+依赖具有传递性
+
+​	直接依赖：在当前项目中通过依赖配置建立的依赖关系
+
+​	间接依赖：被依赖的资源如果依赖其他资源，当前项目间接依赖其他资源
+
+![image-20241231113317107](D:\JAVA\JavaWeb\笔记图片\image-20241231113317107.png)
+
+即ProjectA直接依赖B和一个Jar包，其他都是间接依赖
+
+#### 排除依赖
+
+排除依赖指主动断开依赖的资源，被排除的资源无需指定版本
+
+```xml
+<dependency>
+	<groupId></groupId>
+    <artifactId>ProjectB</artifactId>
+    <version>1.0</version>
+    <!--想要排除的依赖-->
+	<exclusions>
+    	<exclusion>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+### 依赖范围
+
+依赖的jar包，默认情况下，可以在任何地方使用，可以通过``<scope>...</scope>``设置其作用范围，一般写在dependency标签内
+
+作用范围：
+
+​	主程序范围有效（main文件夹范围内）
+
+​	测试程序范围有效（test文件夹范围内）
+
+​	是否参与打包运行（package指令范围内）
+
+| scope值  | 主程序 | 测试程序 | 打包（运行） | 范例        |
+| -------- | ------ | -------- | ------------ | ----------- |
+| compile  | Y      | Y        | Y            | log4j       |
+| test     | N      | Y        | B            | junit       |
+| provided | Y      | Y        | N            | servlet-api |
+| runtime  | N      | Y        | Y            | jdbc驱动    |
+
