@@ -1885,7 +1885,21 @@ Maven坐标主要组成
 | scope值  | 主程序 | 测试程序 | 打包（运行） | 范例        |
 | -------- | ------ | -------- | ------------ | ----------- |
 | compile  | Y      | Y        | Y            | log4j       |
-| test     | N      | Y        | B            | junit       |
-| provided | Y      | Y        | N            | servlet-api |
-| runtime  | N      | Y        | Y            | jdbc驱动    |
+| test     | -      | Y        | -            | junit       |
+| provided | Y      | Y        | -            | servlet-api |
+| runtime  | -      | Y        | Y            | jdbc驱动    |
+
+### 生命周期
+
+Maven的生命周期就是为了对所有的Maven项目构建过程进行抽象和统一
+
+Maven中有3套相互独立的生命周期：
+
+clean：清理工作,主要使用 clean
+
+default：核心工作，主要使用compile、test、package、install
+
+site：生成报告、发布站点等
+
+每套生命周期包含一些阶段（phase），阶段是有顺序的，后面的阶段依赖于前的阶段（在同一套生命周期中）
 
