@@ -1895,11 +1895,250 @@ Maven的生命周期就是为了对所有的Maven项目构建过程进行抽象�
 
 Maven中有3套相互独立的生命周期：
 
-clean：清理工作,主要使用 clean
+clean：清理工作,主要使用 clean（清理）
 
-default：核心工作，主要使用compile、test、package、install
+default：核心工作，主要使用compile（编译）、test（测试）、package（打包）、install（安装）
 
 site：生成报告、发布站点等
 
 每套生命周期包含一些阶段（phase），阶段是有顺序的，后面的阶段依赖于前的阶段（在同一套生命周期中）
+
+## Spring
+
+官网：[Spring | Home](https://spring.io/)
+
+Spring发展到现在已经形成了一种开发生态圈，Spring提供了若干个子项目，每个项目用于完成特定的功能
+
+Spring Framework 是所有Spring项目的基础框架，而Spring Boot 是对于Spring Framework的简化版
+
+## Http协议
+
+概念：Hyper Text Transfer Protocol，超文本传输协议，规定了浏览器和服务器之间数据传输的规则
+
+特点：
+
+​	1、基于TCP协议：面向连接，安全
+
+​	2、基于请求-响应模型的：一次请求对应一次响应
+
+​	3、HTTP协议是无状态的协议：对于事务处理没有记忆能力。每次请求-响应都是独立的
+
+​		缺点：多次请求间不能共享数据（利用Cookie、Session会话技术解决）
+
+​		优点：速度快
+
+### HTTP请求协议
+
+#### 请求行
+
+请求数据的第一行：由请求方式、资源路径、协议组成
+
+#### 请求头
+
+格式为： key: value 
+
+常见请求头如下： 
+
+| Host            | 请求的主机名                                                 |
+| --------------- | ------------------------------------------------------------ |
+| User-Agent      | 浏览器版本，例如Chrome浏览器的标识类似Mozilla/5.0 ...Chrome/79，IE浏览器的标识类似Mozilla/5.0（Windows NT ...） like Gecko |
+| Accept          | 表示浏览器能够接受的资源类型，如text/*表示文本，image/ *表示图片,  * /*表示所有类型 |
+| Accept-Language | 表示浏览器偏好的语言，服务器可以据此返回不同语言的网页       |
+| Accept-Encoding | 表示浏览器可以支持的压缩类型，如gzip，deflate等              |
+| Content-Type    | 表示主体的数据类型                                           |
+| Content-Length  | 请求主体的大小（单位：字节）                                 |
+
+#### 请求体
+
+Get方式：请求参数在请求行中，没有请求体，如：/login?username=xxx%pwd=xxx  Get请求的大小是有限制的
+
+Post请求：请求参数在请求体中，
+
+
+
+![image-20250106155612689](D:\JAVA\JavaWeb\笔记图片\image-20250106155612689.png)
+
+### HTTP响应协议
+
+#### 响应行
+
+响应数据第一行（协议、状态码、描述）
+
+状态码
+
+| 1xx  | 响应中-临时状态码，表示请求已经接收，告诉客户端应该继续请求或者它已经完成则忽略它 |
+| ---- | ------------------------------------------------------------ |
+| 2xx  | 成功-表示请求已经被成功接收，处理已完成                      |
+| 3xx  | 重定向-重定向到其他地方，让客户端再发起一次请求以完成整个处理 |
+| 4xx  | 客户端错误-处理发生错误，责任在客户端，如：请求了不存在的资源（404），客户端未被授权（401） |
+| 5xx  | 服务器错误-处理发生错误，责任在服务端，如：程序抛出异常等    |
+
+#### 响应头
+
+第二行开始，格式 key: value
+
+常见响应头
+
+| Content-Type     | 表示该响应内容的类型，例如text/html,application/json |
+| ---------------- | ---------------------------------------------------- |
+| Content-Length   | 表示该响应内容的长度（字节数）                       |
+| Content-Encoding | 表示该响应压缩算法，例如gzip                         |
+| Cache-Control    | 指示客户端应如何缓存，例如max-age=300表示            |
+| Set-Cookie       | 告诉浏览器为当前页面所在的域设置Cookie               |
+
+#### 响应体
+
+最后一部分，存放响应数据，可以是JSON数据，文本，图片等
+
+### HTTP协议解析
+
+可以自己来实现HTTP的协议解析，借助server socket来进行实现，读取请求行，请求头，请求体，然后响应回传数据，将请求行，请求头，请求体返回回去。
+
+一般都有现成的Web服务器来实现对HTTP协议操作进行封装，简化web程序开发，部署Web项目，对外提供网上信息流量服务。Java中常用的为：Tomcat
+
+## Tomcat
+
+概念：Tomcat是Apache软件基金会一个核心项目，是一个开源免费的轻量级Web服务器，支持Servlet/JSP少量JavaEE规范
+
+JavaEE：Java Enterprise Edition，Java企业版。指Java企业级开发的技术规范总和，包含13项技术规范：JDBC、JNDI、EJB、RMI、JSP、Servlet、XML、JMS、Java IDL、JTS、JTA、JavaMail、JAF
+
+Tomcat也被称为Web容器、Servlet容器。Servlet程序需要依赖于Tomcat才能运行
+
+官网：[Apache Tomcat® - Welcome!](https://tomcat.apache.org/)
+
+安装部署推荐：[Tomcat安装和配置（超详细）_apache tomcat下载安装及配置教程-CSDN博客](https://blog.csdn.net/m0_74824112/article/details/144774801)
+
+## Springboot
+
+Springboot内置有tomcat服务器，基于Springboot开发的应用程序，内置了tomcat服务器，当启动类运行时，会自动启动内嵌的tomcat
+
+服务器。
+
+对于Springboot项目，起步依赖一般有spring-boot-starter-web、spring-boot-starter-test等
+
+### 传参
+
+#### 简单参数
+
+对应普通参数（即Get方式传参或者POST传键值对），三种方式获取
+
+1、原始方式获取请求参数
+
+​	Controller方法形参中声明HttpServletRequest对象
+
+​	调用对象的getParameter（参数名）方法来获取，需要手动进行类型转换，较为麻烦
+
+2、Springboot中接收简单参数
+
+​	请求参数名与方法形参名相同
+
+​	会自动进行类型转换
+
+3、@RequestParam注解
+
+​	方法形参名与请求参数名称不匹配，通过该注解完成映射
+
+​	改注解的required属性默认是true，代表请求参数必须传递
+
+#### 实体参数
+
+复杂实体对象：请求参数名与形参对象属性名相同，按照对象层次结构关系即可接收嵌套POJO属性参数
+
+#### 数组集合参数
+
+数组：请求参数名与形参中数组变量名相同，可以直接使用数组封装
+
+集合：请求参数名与形参中集合变量名相同，通过@RequestParam绑定参数关系
+
+#### 日期参数
+
+日期参数：使用@DateTimeFormat注解完成日期参数格式转换
+
+#### JSON参数
+
+JSON参数：JSON数据键名与形参对象属性名相同，定义POJO类型形参即可接收参数，需要使用@RequestBody标识
+
+这个最常用
+
+#### 路径参数
+
+路径参数：通过请求URL直接传递参数，使用{参数名}来表示该路径参数，需要使用@PathVariable获取路径参数
+
+```java
+package jha.spring.springquicklystart.controller;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jha.spring.springquicklystart.pojo.User;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+
+@RestController
+public class TestController {
+    @RequestMapping("/old")
+    public String getDate1(HttpServletRequest request){
+        String name = request.getParameter("name");
+        String ageStr = request.getParameter("age");
+        Integer age=Integer.parseInt(ageStr);
+        return name+"今年"+age+"岁！";
+    }
+    @RequestMapping("/auto")
+    public String getDate2(String name,Integer age){
+
+        return name+"今年"+age+"岁！";
+    }
+    @RequestMapping("/diff")
+    public String getDate3(@RequestParam(name = "name") String username, Integer age){
+
+        return username+"今年"+age+"岁！";
+    }
+
+    @RequestMapping("/noParam")
+    public String getDate4(@RequestParam(name = "name" ,required=false) String username, Integer age){
+
+        return username+"今年"+age+"岁！";
+    }
+
+    @RequestMapping("/simplePojo")
+    public String getPojo(User user){
+
+        return user.toString();
+    }
+    @RequestMapping("/array")
+    public String getArray(String[] hobby){
+
+        return Arrays.toString(hobby);
+    }
+    @RequestMapping("/list")
+    public String getArray(@RequestParam(name = "hobbys") List<String> hobby){
+
+        return hobby.toString();
+    }
+    @RequestMapping("/date")
+    /*public String getDateTime(@DateTimeFormat(pattern ="yyyy-MM-dd HH:mm:ss")LocalDateTime date){*/
+    public String getDateTime(@DateTimeFormat(pattern ="yyyy年MM月dd日 HH时mm分ss秒")LocalDateTime date){
+        return date.toString();
+    }
+    @RequestMapping("/json")
+    public String getJson(@RequestBody User user){
+
+        return user.toString();
+    }
+    @RequestMapping("/jsonList")
+    public String getJson(@RequestBody List<User> user){
+
+        return user.toString();
+    }
+    @RequestMapping("/path/{id}/{name}")
+    public String getPathData(@PathVariable Integer id,@PathVariable String name){
+
+        return "id为："+id+"，名字为："+name;
+    }
+
+}
+
+```
 
