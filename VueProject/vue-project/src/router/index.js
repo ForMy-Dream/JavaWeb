@@ -24,6 +24,12 @@ const routes = [
     name: 'test',
     component: () => import('../views/element/MyButton.vue')
   },
+  
+  {
+    path:'/emps',
+    name:'emps',
+    component:()=>import('../views/myView/EmpViewTest.vue')
+  },
   {
     path:'/',
     redirect:'/emp'

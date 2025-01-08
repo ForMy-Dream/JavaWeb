@@ -2068,6 +2068,7 @@ JSON参数：JSON数据键名与形参对象属性名相同，定义POJO类型�
 package jha.spring.springquicklystart.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jha.spring.springquicklystart.pojo.Request;
 import jha.spring.springquicklystart.pojo.User;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -2103,9 +2104,9 @@ public class TestController {
     }
 
     @RequestMapping("/simplePojo")
-    public String getPojo(User user){
+    public User getPojo(User user){
 
-        return user.toString();
+        return user;
     }
     @RequestMapping("/array")
     public String getArray(String[] hobby){
@@ -2113,10 +2114,11 @@ public class TestController {
         return Arrays.toString(hobby);
     }
     @RequestMapping("/list")
-    public String getArray(@RequestParam(name = "hobbys") List<String> hobby){
+    public List<String> getArray(@RequestParam(name = "hobbys") List<String> hobby){
 
-        return hobby.toString();
+        return hobby;
     }
+
     @RequestMapping("/date")
     /*public String getDateTime(@DateTimeFormat(pattern ="yyyy-MM-dd HH:mm:ss")LocalDateTime date){*/
     public String getDateTime(@DateTimeFormat(pattern ="yyyy年MM月dd日 HH时mm分ss秒")LocalDateTime date){
@@ -2127,10 +2129,15 @@ public class TestController {
 
         return user.toString();
     }
-    @RequestMapping("/jsonList")
-    public String getJson(@RequestBody List<User> user){
+   /* @RequestMapping("/jsonList")
+    public List<User> getJson(@RequestBody List<User> user){
 
-        return user.toString();
+        return user;
+    }*/
+    @RequestMapping("/jsonList")
+    public Request getJson(@RequestBody List<User> user){
+
+        return Request.success(user);
     }
     @RequestMapping("/path/{id}/{name}")
     public String getPathData(@PathVariable Integer id,@PathVariable String name){
@@ -2142,3 +2149,130 @@ public class TestController {
 
 ```
 
+### 响应数据
+
+@ResponseBody
+
+类型：方法注解、类注解
+
+位置：Controller方法上/类上
+
+作用：将方法返回值直接响应，如果返回值类型是实体对象/集合，会转换为JSON格式响应
+
+说明：@RestController=@Controller+@ResponseBody
+
+而为了统一响应给前端的数据格式，采用一个类对数据进行封装
+
+```java
+public class Request {
+    private Integer code;
+    private String msg;
+    private Object data;
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public Request() {
+    }
+
+    public Request(Integer code, String msg, Object date) {
+        this.code = code;
+        this.msg = msg;
+        this.data = date;
+    }
+    public static Request success(){
+        return new Request(200,"成功",null);
+    }
+
+    public static Request success(Object data){
+        return new Request(200,"成功",data);
+    }
+}
+
+```
+
+## 分层解耦
+
+内聚：软件中各个功能模块内部的功能联系
+
+耦合：衡量软件中各个层/模块之间的依赖、关联的程度
+
+软件设计原则：高内聚，低耦合
+
+控制反转：Inversion Of Control，简称IOC，对象的创建控制权由程序自身转移到外部（容器），这种思想称为控制反转
+
+依赖注入：Dependency injection，简称DI，容器为应用程序提供运行时，所依赖的资源，称之为依赖注入
+
+Bean对象：IOC容器创建、管理的对象，称为bean
+
+### 三层架构
+
+#### 控制层（Controller）
+
+控制层，接受前端发送的请求，对请求进行处理，并相应数据
+
+#### 服务层（Service）
+
+业务逻辑层，处理具体的业务逻辑
+
+#### 数据访问层（Dao）
+
+数据访问层（Data Access Object）(持久层），负责数据访问操作，包括数据的增、删、改、查。
+
+#### Bean
+
+想要将某个对象交给IOC容器进行管理，需要在对应的类上加上特定的注解
+
+| 注解        | 说明                 | 位置                                            |
+| ----------- | -------------------- | ----------------------------------------------- |
+| @Component  | 声明bean的注解       | 不属于下面三类时，使用此注解                    |
+| @Controller | @Component的衍生注解 | 标注在控制器类上                                |
+| @Service    | @Component的衍生注解 | 标注在业务类上                                  |
+| @Repository | @Component的衍生注解 | 标注在数据访问类上（由于myBatis整合，使用较少） |
+
+注意：
+
+​	声明bean的时候，可以通过value属性指定bean的名字，如果没有指定，默认为类名（首字母小写）
+
+​	使用以上四个注解都可以声明bean，但是在Springboot集成Web开发中，声明控制器只能用@Controller
+
+#### Bean组件扫描
+
+前面声明bean的四大注解，要想生效，还需要被组件扫描注解 @ComponentScan扫描
+
+@ComponentScan注解虽然没有显示配置，但是实际上已经包含在启动类声明注解@SpringBootApplication中，默认扫描范围是启动类所在包及子包
+
+如果想要声明扫描范围，使用 @ComponentScan（{"路径1","路径2"}）,不推荐这么干，按照规范编程即可
+
+#### Bean注入
+
+一般使用@Autowired注解，默认是按照类型进行，如果存在多个相同类型的bean，会报错
+
+而解决方法有三种
+
+​	1、@Primary注解，在想要使用的哪个类上加上@Primary注解
+
+​	2、@Qualifier注解，在@Autowried注解下加上@Qualifier注解，传入类名，@Qualifier（"ServiceB"）
+
+​	3、@Resource，不使用@Autowried注解，使用@Resource注解，传入类名，@Resource（"ServiceB"）
