@@ -2275,4 +2275,168 @@ Bean对象：IOC容器创建、管理的对象，称为bean
 
 ​	2、@Qualifier注解，在@Autowried注解下加上@Qualifier注解，传入类名，@Qualifier（"ServiceB"）
 
-​	3、@Resource，不使用@Autowried注解，使用@Resource注解，传入类名，@Resource（"ServiceB"）
+​	3、@Resource，不使用@Autowried注解，使用@Resource注解，传入类名，@Resource（name="ServiceB"）
+
+## MyBatis
+
+MyBatis是一款优秀的持久层框架，用于简化JDBC的开发
+
+MyBatis原本是Apache的一个开源项目iBatis，2010年这个项目由apache迁移到了google code，并且改名为MyBatis。2013年11月迁移到Github
+
+[MyBatis中文网](https://mybatis.net.cn/)
+
+### JDBC
+
+JDBC：（Java DataBase Connectivity），就是使用Java语言操作关系型数据库的一套API
+
+本质：sun公司官方定义的一套操作所有关系型数据库的规范，即接口
+
+我们可以使用这套接口（JDBC）编程，真正执行的代码是驱动jar包中的实现类，sun公司并不提供接口的实现，而是由数据库厂商来进行实现
+
+### 数据连接池
+
+数据库连接池是个容器，负责分配、管理数据库连接（Connection）
+
+它允许应用程序重复使用一个现有的数据库连接，而不是重新建立一个
+
+释放空闲时间超过最大空闲时间的连接，来避免因为没有释放连接而引起的数据库连接遗漏
+
+优势：
+
+​	资源重用
+
+​	提升系统响应速度
+
+​	避免数据库连接遗漏
+
+#### 标准接口
+
+DataSource
+
+​	官方（sun）提供的数据库连接池接口，由第三方组织实现此接口
+
+​	功能：获取连接   ``Connection getConnection() throws SQLException;``
+
+常见产品：
+
+​	C3P0、DBCP、Druid（德鲁伊）、Hikari（追光者）Springboot默认
+
+Druid
+
+​	Druid连接池是阿里巴巴开源的数据库连接池项目
+
+​	功能强大，性能优秀，是Java语言最好的数据库连接池之一
+
+切换到Durid数据库连接池
+
+```xml
+<dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>druid-spring-boot-starter</artifactId>
+    <version>1.2.8</version>
+</dependency>
+```
+
+配置文件 application.Properties
+
+```
+spring.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
+spring.datasource.url=jdbc:oracle:thin:@127.0.0.1:1521:orcl
+spring.datasource.username=JHA
+spring.datasource.password=****
+
+```
+
+## lombok
+
+Lombok是一个使用的Java类库，能通过注解的形式自动生成构造器、getter/setter、equals、hashcode、toString等方法，并可以自动化生成日志变量，简化Java开发、提高效率
+
+| 注解                | 作用                                                         |
+| ------------------- | ------------------------------------------------------------ |
+| @Getter/@Setter     | 为所有的属性提供get/set方法                                  |
+| @ToString           | 会给类自动生成易阅读的toString方法                           |
+| @EqualsAndHashCode  | 根据类所拥有的非静态字段自动重写equals方法和hashcode方法     |
+| @Data               | 提供了更综合的生成代码功能（@Getter+@Setter+@ToString+@EqualsAndHashcode） |
+| @NoArgsConstructor  | 为实体类生成无参构造方法                                     |
+| @AllArgsConstructor | 为实体类生成除了static修饰的字段之外带有各参数的构造方法     |
+
+Lombok会在编辑时，自动生成对应的java代码，我们使用Lombok时，还需要安装一个Lombok的插件（idea自带）
+
+如：
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Emps {
+    private Integer id;
+    private String username;
+    private String password;
+    private Integer gender;
+    private String image;
+    private Integer job;
+    private LocalDateTime entryDate;
+    private Integer deptId;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
+    private Integer isUsing;
+
+}
+```
+
+
+
+## MyBatis的CURD
+
+引入Mybatis，配置文件添加
+
+```
+spring.application.name=Spring-QuicklyStart
+server.port=10086
+spring.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
+spring.datasource.url=jdbc:oracle:thin:@127.0.0.1:1521:orcl
+spring.datasource.username=JHA
+spring.datasource.password=***
+#配置mybatis的日志, 指定输出到控制台
+mybatis.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
+
+#开启mybatis的驼峰命名自动映射开关 a_column ------> aCloumn
+mybatis.configuration.map-underscore-to-camel-case=true
+
+
+```
+
+添加Mapper-Server-Controller的接口和实现
+
+### 参数占位符
+
+#### #{..}
+
+执行Sql时，会将#{...}替换成？生成预编译SQL，会自动设置参数值。
+
+使用时机：参数传递，都是要#{...}
+
+#### ${...}
+
+拼接Sql。直接将参数拼接在SQL语句中，存在SQL注入的问题
+
+使用时机：如果对表名、列表进行动态设置时使用
+
+
+
+对于在Mapper中直接写Sql，可以进行传参，使用#{}
+
+如果mapper接口方法形参只有一个普通类型的参数，#{...}里面的属性名可以随便写，如：#{id}、#{value}。
+
+```Java
+@Mapper
+public interface EmpMapper {
+    @Select("select * from  users")
+    public List<PUser> getUser();
+    @Select("select * from emp")
+    public List<Emps> getEmp();
+    @Delete("delete emp where id=#{id}")
+    public Integer deleteEmp(Integer id);
+}
+```
+
