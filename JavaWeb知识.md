@@ -2386,7 +2386,7 @@ public class Emps {
 
 
 
-## MyBatis的CURD
+## MyBatis的CURD(使用注解方式)
 
 引入Mybatis，配置文件添加
 
@@ -2439,4 +2439,136 @@ public interface EmpMapper {
     public Integer deleteEmp(Integer id);
 }
 ```
+
+### 新增（主键返回）
+
+在数据添加成功后，需要获取插入数据库数据的组件
+
+``@Options(keyProperty="id",useGeneratedKeys=true,keyColumn = "id")`` 会自动将生成的主键值，赋值给对象的主键对应的属性
+
+```java
+    @Options(keyProperty = "id", useGeneratedKeys = true, keyColumn = "id")
+    @Insert("INSERT INTO emp (username, password, gender, image, job, entrydate, dept_id, create_time, update_time, is_using) " +
+            "VALUES (#{username}, #{password}, #{gender}, #{image}, #{job}, #{entrydate}, #{deptId}, #{createTime}, #{updateTime}, #{isUsing})")
+    Integer insertEmp(Emps emps);
+```
+
+### 数据封装
+
+对于查询数据库返回数据，想要返回实体，需要进行数据封装，如果字段名一致，那么会自动进行封装，字段不一样就需要手动处理
+
+#### 起别名
+
+在sql语句中，对不一样的列名起别名，别名和实体类属性名一样
+
+```java
+@Select("select id,username,password,gender, image,job,entrydate,dept_id as deptId,create_time createTime, update_time updateTime,is_using isUsing from emp where id=#{id}")
+
+    public Emps getEmpById(Integer id);
+```
+
+#### 手动结果映射
+
+通过@Results及@Result进行手动结果映射
+
+```java
+@Select("select * from emp where id=#{id}")
+@Results({
+        @Result(column = "dept_id",property = "deptId"),
+        @Result(column = "create_time",property = "createTime"),
+        @Result(column = "update_time",property = "updateTime"),
+        @Result(column = "is_using",property = "isUsing")
+})
+public Emps getEmpById(Integer id);
+```
+
+#### 开启驼峰命名
+
+如果字段名与属性名符合驼峰命名规则，mybatis会自动通过驼峰命名规则映射
+
+在配置文件添加
+
+```properties
+#开启mybatis的驼峰命名自动映射开关 a_column ------> aCloumn
+mybatis.configuration.map-underscore-to-camel-case=true
+```
+
+#### 条件查询
+
+在条件查询中使用like ，因为#{}不能出现在''(引号之内)，所以直接使用会存在问题，而使用&{}会存在sql注入问题，所以使用concat()进行拼接，orcale直接使用||
+
+传参命名 对于低版本的springboot 需要加注解@Param("name")
+
+```java
+ @Select("select * from emp where username like '%'||#{name}||'%' and gender =#{gender} and entrydate between #{start} and #{end}" )
+    public Emps getEmpBySearch(@Param("name") String username, Integer gender, LocalDateTime start,LocalDateTime end);
+}
+```
+
+## MyBatis的CURD（使用XML映射文件）
+
+XML映射文件
+
+规范：
+
+​	XML映射文件的名称与Mapper接口名称一致，并且将XML映射文件和Mapper接口放置在相同包下（同包同名）
+
+​	XML映射文件的namespace属性与Mapper接口全限定名一致
+
+​	XML映射文件中sql语句的id与Mapper接口中的方法名一致，并保持返回类型一致
+
+![image-20250115145843982](D:\JAVA\JavaWeb\笔记图片\image-20250115145843982.png)
+
+其中resultType为返回的单条记录所封装的类型
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jha.spring.springquicklystart.Mapper.EmpMapper2">
+
+    <select id="getUser" resultType="jha.spring.springquicklystart.pojo.Emps">
+        select * from  emp
+    </select>
+    <select id="getEmpBySearch" resultType="jha.spring.springquicklystart.pojo.Emps">
+        select * from emp where username like '%'||#{name}||'%' and gender =#{gender} and entrydate between #{start} and #{end}
+    </select>
+
+
+</mapper>
+
+```
+
+
+
+### 动态SQL-if
+
+< if>：用于判断条件是否成立，使用test属性进行条件判断，如果条件为true，则拼接SQL
+
+< where>：where元素只会在子元素有内容的情况下才插入where子句，而且会自动去除子句的开头的AND或OR
+
+< set>：动态的在行首插入Set关键字，并会删掉额外的逗号。（用于update语句中）
+
+### 动态SQL-foreach
+
+用于遍历元素
+
+属性
+
+​	collection：集合名称
+
+​	item：集合遍历出来的元素/项
+
+​	separator：每一次遍历使用的分隔符
+
+​	open：遍历开始前拼接的片段
+
+​	close：遍历结束后拼接的片段
+
+### 动态SQL-SQL片段
+
+< sql>：定义可重用的SQL片段，通过属性id来区分
+
+< include>：通过属性refid，指定包含的SQL片段
 

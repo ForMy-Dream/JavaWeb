@@ -49,7 +49,7 @@ insert into dept(
                  is_using) values('¼¼Êõ²¿',sysdate,sysdate,1);
 commit;
 
-select username,password,gender, image,job,entrydate,dept_id,create_time, update_time,is_using from emp
+
 insert into emp (username,password,gender, image,job,entrydate,dept_id,create_time, update_time,is_using)values(?, ?, ?, ?,?, ?, ?, ?, ?, ?)
 
 insert into emp (username,password,gender, image,job,entrydate,dept_id,create_time, update_time,is_using)values('testuser','', 1,'',1, '2025-01-14',1, '2025-01-14', '2025-01-14', 1)

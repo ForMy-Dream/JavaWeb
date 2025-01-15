@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jha.spring.springquicklystart.Mapper.EmpMapper2">
+    <update id="updateEmp">
+        update emp
+        <set>
+        <if test="username !=null and username!=''">
+            username=#{username},
+        </if>
+        <if test="gender !=null ">
+            gender=#{gender},
+        </if>
+        <if test="image !=null">
+            image=#{image},
+            </if>
+        <if test="job !=null">
+            job=#{job},
+            </if>
+        <if test="entrydate !=null">
+            entrydate=#{entrydate},
+        </if>
+        <if test="deptId !=null ">
+            dept_id=#{deptId},
+            </if>
+        <if test="isUsing !=null">
+            is_using=#{isUsing},
+            </if>
+        update_time=sysdate
+
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+    <delete id="deleteByIds">
+        delete emp where  id  in
+            <foreach collection="ids" separator="," item="id" open="(" close=")">
+                #{id}
+            </foreach>
+    </delete>
+
+    <select id="getUser" resultType="jha.spring.springquicklystart.pojo.Emps">
+        select *
+        from emp
+    </select>
+    <select id="getEmpBySearch" resultType="jha.spring.springquicklystart.pojo.Emps">
+       <include refid="SelectEmp"></include>
+
+        <where>
+            <if test="name != null and name !='' ">
+                username
+                like '%'||#{name}||'%'
+            </if>
+            <if test="gender!=null">
+                and gender =#{gender}
+            </if>
+            <if test="start !=null and  end !=null">
+                and entrydate between #{start} and #{end}
+            </if>
+        </where>
+    </select>
+    <sql id="SelectEmp">
+        select id, username,password,gender, image,job,entrydate,dept_id,create_time, update_time,is_using from emp
+    </sql>
+
+
+</mapper>

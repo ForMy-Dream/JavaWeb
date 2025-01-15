@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @Primary
 @Service
@@ -35,5 +36,15 @@ public class empsServerImpl implements empServiceInterface {
     @Override
     public Integer insertEmP(Emps emps) {
         return mapper.insertEmp(emps);
+    }
+
+    @Override
+    public Emps getEmpByID(Integer id) {
+        return mapper.getEmpById(id);
+    }
+
+    @Override
+    public Emps getEmpBySearch(String username, Integer gender, LocalDateTime start, LocalDateTime end) {
+        return mapper.getEmpBySearch(username, gender, start, end);
     }
 }

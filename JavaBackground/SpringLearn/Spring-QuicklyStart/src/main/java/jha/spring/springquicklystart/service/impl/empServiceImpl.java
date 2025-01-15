@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @Service
 public class empServiceImpl implements empServiceInterface {
@@ -39,6 +40,16 @@ public class empServiceImpl implements empServiceInterface {
 
     @Override
     public Integer insertEmP(Emps emp) {
+        return null;
+    }
+
+    @Override
+    public Emps getEmpByID(Integer id) {
+        return null;
+    }
+
+    @Override
+    public Emps getEmpBySearch(String username, Integer gender, LocalDateTime start, LocalDateTime end) {
         return null;
     }
 

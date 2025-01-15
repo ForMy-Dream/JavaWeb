@@ -4,46 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d816790-db98-4f9b-ad7f-0e4706bdf326" name="更改" comment="Maven更新">
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/main/java/jha/spring/springquicklystart/dao/EmpMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/main/java/jha/spring/springquicklystart/dao/empInterface.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/main/java/jha/spring/springquicklystart/dao/impl/empImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/main/java/jha/spring/springquicklystart/pojo/Emp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/main/java/jha/spring/springquicklystart/pojo/PUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/main/java/jha/spring/springquicklystart/pojo/Users.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/main/java/jha/spring/springquicklystart/service/empServiceInterface.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/main/java/jha/spring/springquicklystart/service/impl/empServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/main/java/jha/spring/springquicklystart/service/impl/empServiceImplB.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/emp.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/controller/EmpController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/dao/EmpMapper.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/dao/empInterface.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/dao/impl/empImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/pojo/Emp.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/pojo/PUser.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/pojo/Request.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/pojo/Users.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/service/empServiceInterface.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/service/impl/empServiceImpl.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/service/impl/empServiceImplB.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/jha/spring/springquicklystart/utils/XmlParseUtils.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/surefire-reports/2025-01-09T17-11-02_797.dumpstream" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/surefire-reports/2025-01-10T09-37-42_424.dumpstream" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/surefire-reports/TEST-jha.spring.springquicklystart.SpringQuicklyStartApplicationTests.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/surefire-reports/jha.spring.springquicklystart.SpringQuicklyStartApplicationTests.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/test-classes/jha/spring/springquicklystart/SpringQuicklyStartApplicationTests.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VueProject/vue-project/src/views/myView/EmpViewTest.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/test/java/jha/spring/springquicklystart/SpringQuicklyStartApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/src/test/java/jha/spring/springquicklystart/SpringQuicklyStartApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/JavaBackground/SpringLearn/Spring-QuicklyStart/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaWeb知识.md" beforeDir="false" afterPath="$PROJECT_DIR$/JavaWeb知识.md" afterDir="false" />
+    <list default="true" id="2d816790-db98-4f9b-ad7f-0e4706bdf326" name="更改" comment="Mybatis添加">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,6 +51,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "模块",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0",
@@ -112,6 +75,8 @@
       <workItem from="1735614067431" duration="335000" />
       <workItem from="1736146328570" duration="132000" />
       <workItem from="1736835725558" duration="80000" />
+      <workItem from="1736846646927" duration="104000" />
+      <workItem from="1736904092904" duration="32000" />
     </task>
     <task id="LOCAL-00001" summary="Maven依赖添加">
       <created>1735610619387</created>
@@ -148,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1735809551152</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Mybatis添加">
+      <created>1736846741435</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1736846741435</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -158,6 +130,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Maven依赖添加" />
     <MESSAGE value="Maven更新" />
-    <option name="LAST_COMMIT_MESSAGE" value="Maven更新" />
+    <MESSAGE value="Mybatis添加" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mybatis添加" />
   </component>
 </project>
