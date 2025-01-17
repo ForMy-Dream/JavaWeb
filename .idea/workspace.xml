@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d816790-db98-4f9b-ad7f-0e4706bdf326" name="更改" comment="Mybatis添加">
+    <list default="true" id="2d816790-db98-4f9b-ad7f-0e4706bdf326" name="更改" comment="Mybatis更新">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -77,6 +77,8 @@
       <workItem from="1736835725558" duration="80000" />
       <workItem from="1736846646927" duration="104000" />
       <workItem from="1736904092904" duration="32000" />
+      <workItem from="1736932721261" duration="60000" />
+      <workItem from="1737017312468" duration="42000" />
     </task>
     <task id="LOCAL-00001" summary="Maven依赖添加">
       <created>1735610619387</created>
@@ -120,7 +122,14 @@
       <option name="project" value="LOCAL" />
       <updated>1736846741435</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Mybatis更新">
+      <created>1736932772867</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1736932772867</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,6 +140,7 @@
     <MESSAGE value="Maven依赖添加" />
     <MESSAGE value="Maven更新" />
     <MESSAGE value="Mybatis添加" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mybatis添加" />
+    <MESSAGE value="Mybatis更新" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mybatis更新" />
   </component>
 </project>

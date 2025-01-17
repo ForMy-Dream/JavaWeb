@@ -10,6 +10,9 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 @SpringBootTest
@@ -32,6 +35,15 @@ class SpringQuicklyStartApplicationTests {
 
         System.out.println(mapper.deleteByIds(ids));
     }
+
+    @Test
+    public void test2(){
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d ah:mm:ss");
+        DateTimeFormatter finalFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String st="2025-1-17 下午3:02:21";
+        System.out.println("解析后的时间："+finalFormatter.format (LocalDateTime.parse(st, formatter)));
+        }
 
 
 }

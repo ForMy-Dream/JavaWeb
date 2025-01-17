@@ -11,6 +11,7 @@ import java.util.List;
 public interface EmpMapper {
     @Select("select * from  users")
     public List<PUser> getUser();
+
     @Select("select * from emp")
     public List<Emps> getEmp();
     @Delete("delete emp where id=#{id}")
@@ -45,4 +46,5 @@ public interface EmpMapper {
 
     @Select("select * from emp where username like '%'||#{name}||'%' and gender =#{gender} and entrydate between #{start} and #{end}" )
     public Emps getEmpBySearch(@Param("name") String username, Integer gender, LocalDateTime start,LocalDateTime end);
+
 }

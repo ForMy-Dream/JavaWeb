@@ -21,5 +21,8 @@ public interface EmpMapper2 {
 
     public Integer deleteByIds(List<Integer> ids);
 
+    public Integer getEmpCount();
+
+    public List<Emps> getEmpLimit(Integer pageNo,Integer pageCount);
 
 }

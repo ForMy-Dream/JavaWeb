@@ -61,6 +61,19 @@
             </if>
         </where>
     </select>
+    <select id="getEmpCount" resultType="java.lang.Integer">
+        select count(1) from emp
+    </select>
+    <select id="getEmpLimit" resultType="jha.spring.springquicklystart.pojo.Emps">
+        select *
+        from (select to_char(rownum) "seq",
+                     #{pageNo}           "page_no",
+                     a.*
+              from (select *
+                    from emp) a)
+        where "seq" between (#{pageNo}  - 1) * #{pageCount}  + 1 and #{pageNo}  * #{pageCount}
+
+    </select>
     <sql id="SelectEmp">
         select id, username,password,gender, image,job,entrydate,dept_id,create_time, update_time,is_using from emp
     </sql>

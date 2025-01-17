@@ -8,7 +8,7 @@
                            <el-submenu index="1">
                                <template slot="title"><i class="el-icon-message"></i>系统信息管理</template>
                                <el-menu-item index="1-1">
-                                   <router-link to="/test">部门管理</router-link> 
+                                   <router-link to="/test" style="text-decoration: none;">部门管理</router-link> 
                                </el-menu-item>
                                <el-menu-item index="1-2">
                                    <router-link to="/emp">人员管理</router-link>   
@@ -37,7 +37,7 @@
                            </el-form>
                            <el-table :data="tableData" stripe style="width: 100% " >
                              
-                               <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+                               <el-table-column prop="username" label="姓名" width="180"></el-table-column>
       
         
                                <el-table-column label="操作" width="180">
@@ -90,10 +90,10 @@
        },
        methods: {
            getData(){
-               axios.post("http://127.0.0.1:10086/listEmp").then(res=>{
+               axios.post("http://127.0.0.1:10086/listEmps").then(res=>{
                  
-                   this.tableData = res.data;
-                   
+                   this.tableData = res.data.data;
+                   console.log('接受参数');
                    console.log(this.tableData);
                })
            },

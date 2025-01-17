@@ -2212,6 +2212,16 @@ public class Request {
 
 ```
 
+## RequestMapping
+
+不同的请求方式对应有不同的注解，RequsetMapping默认包含所有注解，method属性可以进行声明方法
+
+GetMapping、PostMapping、PutMapping、DeleteMapping等注解对应不同的请求方式
+
+RequestMapping可以用在类上也可以用在方法上，如果同时用在类上和该类的方法上，则请求地址为而且拼接起来
+
+
+
 ## 分层解耦
 
 内聚：软件中各个功能模块内部的功能联系
@@ -2571,4 +2581,80 @@ XML映射文件
 < sql>：定义可重用的SQL片段，通过属性id来区分
 
 < include>：通过属性refid，指定包含的SQL片段
+
+### 分页查询
+
+一般需要传入参数，页号，记录数（一页多少记录）
+
+在mysql中
+
+```sql
+select * from myTable  limit 0,5
+```
+
+表示第0行开始，取5行
+
+orcale中,使用rownum进行分页查询
+
+```sql
+select * from (select to_char(rownum) "seq",
+         :页号 "page_no", a.* from 
+(
+select * from emp
+) a) where "seq" between (:页号-1)*:记录数+1 and :页号*:记录数
+```
+
+在java中，可以封装一个PageBean
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PageBean {
+    private Integer total;
+    private List row;
+}
+
+```
+
+然后就可以对总数，已经分页查出来的数据进行返回了
+
+```java
+  @RequestMapping("/GetEmpByLimit")
+    public Request getEmpByLimit(@RequestParam(defaultValue = "1") Integer pageNo,@RequestParam(defaultValue = "5") Integer pageCount){
+        PageBean page=new PageBean();
+        page.setTotal(empMapper2.getEmpCount());
+        page.setRow(empMapper2.getEmpLimit(pageNo,pageCount));
+        return Request.success(page);
+    }
+```
+
+### pageHelper插件实现分页
+
+maven引入插件
+
+```xml
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.4.6</version>
+        </dependency>
+
+```
+
+```java
+ @RequestMapping("/GetEmpByLimitPageHelper")
+    public Request GetEmpByLimitPageHelper(@RequestParam(defaultValue = "1") Integer pageNo,@RequestParam(defaultValue = "5") Integer pageCount){
+        //1、设置分页参数
+        PageHelper.startPage(pageNo,pageCount);
+        //2、执行查询
+        List<Emps> user = empMapper2.getUser();//查询所有的，即select * from myTable
+        Page<Emps> p= (Page<Emps>) user;
+        //3、封装PageBean
+
+        PageBean page=new PageBean((int) p.getTotal(),p.getResult());
+
+        return Request.success(page);
+    }
+```
 
