@@ -28,50 +28,50 @@ public class EmpController {
     private empServiceInterface service;
     @Autowired
     private EmpMapper2 empMapper2;
-
+    //获取所有人员信息
     @RequestMapping("/listEmp")
     public Request getEmp(){
         List<Emp> empService = service.getEmpService();
         return Request.success(empService);
     }
+    //获取所有人员信息
     @RequestMapping("/listEmps")
     public Request getEmpList(){
         List<Emps> empService = empMapper2.getUser();
         return Request.success(empService);
     }
-
+    //获取所有人员信息
     @RequestMapping("/emps")
     public Request getEmps(){
         List<Emps> empService = service.getEmp();
         return Request.success(empService);
     }
-
+    //删除人员信息（单个删除）
     @RequestMapping("/deleteEmps")
     public Request deleteEmps(Integer id){
         Integer empService = service.deleteEmp(id);
         return Request.success(empService);
     }
-
+    //新增人员信息
     @RequestMapping("/insertEmps")
     public Request insertEmps(@RequestBody Emps emp){
         Integer empService = service.insertEmP(emp);
         System.out.println(emp.getId());
         return Request.success("新增的行数："+empService+"，主键为："+emp.getId());
     }
-
-
+    //获取人员信息（单个）
     @RequestMapping("/getEmpsByID")
     public Request getEmpByID(Integer id){
         Emps empService = service.getEmpByID(id);
         return Request.success(empService);
     }
-
+    //获取人员信息（条件搜索）
     @RequestMapping("/getEmpsBySearch")
     public Request getEmpBySearch(String username, Integer gender, LocalDateTime start, LocalDateTime end){
         Emps empService = service.getEmpBySearch(username, gender, start, end);
         return Request.success(empService);
     }
-
+    //获取人员信息（条件搜索）
     @RequestMapping("/getEmpsBySearch2")
     public Request getEmpBySearch2(String username, Integer gender, LocalDateTime start, LocalDateTime end){
         List<Emps> empService = empMapper2.getEmpBySearch(username, gender, start, end);
@@ -111,4 +111,5 @@ public class EmpController {
 
         return Request.success(page);
     }
+
 }

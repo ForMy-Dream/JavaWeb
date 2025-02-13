@@ -2658,3 +2658,39 @@ maven引入插件
     }
 ```
 
+## 文件上传
+
+对于前端，想要实现文件上传，需要在form表单内进行提交，且input 类型需要是file，并且enctype=“multipart/form-data”
+
+在java后端，想要接收传过来的文件数据，则使用MultipartFile进行接收，要求形参名和传输过来的参数名保持一致，如果不一致，则使用@RequestParam(name="")注解
+
+### MultipartFile的常用方法
+
+String getOriginalFileName（）					获取原始文件名
+
+void transferTo（File dest）						   将接收的文件转存到磁盘文件中
+
+long getSize（）												获取文件的大小，单位：字节
+
+byte[] getBytes（）											获取文件内容的字节数组
+
+InputStream getInputStream（）					获取接收到的文件内容的输入流
+
+### 本地存储
+
+```java
+   @RequestMapping("/upload")
+    public Request upload(String name,Integer age, MultipartFile file) {
+        String filename = file.getOriginalFilename();
+        String newName = UUID.randomUUID().toString();
+        String newFileName = newName+filename.substring(filename.lastIndexOf("."));
+        try {
+           // file.transferTo(new File("D:\\JAVA\\resource\\uploadFile\\" + filename));//保存下来的文件名为源文件名
+            file.transferTo(new File("D:\\JAVA\\resource\\uploadFile\\" + newFileName));//保存下来的文件名为源文件名
+        } catch (IOException e) {
+            log.error("文件保存出错");
+        }
+        return Request.success("文件保存成功");
+    }
+```
+
