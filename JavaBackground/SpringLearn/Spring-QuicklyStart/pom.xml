@@ -71,7 +71,11 @@
             <version>1.4.6</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.4.3</version>
+        </dependency>
         <!--        德鲁伊连接池-->
         <dependency>
             <groupId>com.alibaba</groupId>
