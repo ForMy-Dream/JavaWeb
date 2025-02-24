@@ -15,8 +15,4 @@ spring.servlet.multipart.max-file-size=100MB
 spring.servlet.multipart.max-request-size=100MB
 
 
-# MinIO ??
-minio.endpoint=http://169.254.64.130:9001/
-minio.access-key=admin
-minio.secret-key=jha220717
-minio.bucket-name=jha-test
+

@@ -44,4 +44,7 @@ public class Request {
     public static Request success(Object data){
         return new Request(200,"成功",data);
     }
+    public static Request err(Object data){
+        return new Request(500,"失败",data);
+    }
 }

@@ -3,8 +3,11 @@ package jha.spring.springquicklystart.controller;
 
 import io.minio.MinioClient;
 import io.minio.UploadObjectArgs;
+import jha.spring.springquicklystart.pojo.MinioConfig;
 import jha.spring.springquicklystart.pojo.Request;
+import jha.spring.springquicklystart.pojo.minioConfigDemo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +21,8 @@ import java.util.UUID;
 @CrossOrigin
 @RestController
 public class UploadController {
-
+@Autowired
+public MinioConfig minio;
     @RequestMapping("/upload")
     public Request upload(String name,Integer age, MultipartFile file) {
         String filename = file.getOriginalFilename();
@@ -28,15 +32,14 @@ public class UploadController {
            // file.transferTo(new File("D:\\JAVA\\resource\\uploadFile\\" + filename));//保存下来的文件名为源文件名
             // file.transferTo(new File("D:\\JAVA\\resource\\uploadFile\\" + newFileName));//保存下来的文件名为源文件名
 
-
             MinioClient minioClient = MinioClient.builder()
-                    .endpoint("http://169.254.64.130:9000/")
-                    .credentials("admin", "jha220717")
+                    .endpoint(minio.getEndpoint())
+                    .credentials(minio.getAccessKey(), minio.getSecretKey())
                     .build();
 
             minioClient.putObject(
                     io.minio.PutObjectArgs.builder()
-                            .bucket("jha-test")
+                            .bucket(minio.getBucketName())
                             .object(filename)
                             .stream(file.getInputStream(), file.getSize(), -1)
                             .contentType(file.getContentType())
@@ -48,10 +51,9 @@ public class UploadController {
                                 .object(objectName)
                                 .filename("D:/Users/Desktop/1.pdf")
                                 .build());*/
-                System.out.println("文件上传成功！");
 
         } catch (Exception e) {
-        System.err.println("文件上传失败: " + e.getMessage());}
+            return Request.err(e.getMessage());}
         return Request.success("文件保存成功");
     }
 }

@@ -2694,3 +2694,408 @@ InputStream getInputStream（）					获取接收到的文件内容的输入流
     }
 ```
 
+### 使用Minio
+
+#### Minio的下载安装
+
+Minio的下载地址：  [MinIO | 用于AI的S3 & Kubernetes原生对象存储](https://minio.org.cn/)，这边我在windows上部署的
+
+可以参考这个：[minio：安装部署并安装成windows服务_minio使用xsserver打包成服务-CSDN博客](https://blog.csdn.net/shaojiayong/article/details/120511689)
+
+新建minio文件夹，然后在minio文件夹下新建bin、data、log三个文件夹
+
+将下载的服务端程序放到bin文件夹中，服务端名字为minio.exe
+
+在bin目录下进入cmd，管理员执行
+
+```
+setx MINIO_ROOT_USER admin    设置用户名
+setx MINIO_ROOT_PASSWORD password     设置密码
+
+```
+
+添加一个bat脚本用来启动minio，不能直接点击minio.exe文件执行
+
+```
+cd C:\Minio\bin
+title minio
+minio.exe server C:\Minio\data --address :9000 --console-address :9001
+pause
+```
+
+启动后就会出现想要的地址 访问 输入账户密码即可
+
+
+
+## 参数配置化
+
+在配置文件中进行配置各种自己想要的信息
+
+如配置minio的各个信息：
+
+```properties
+minio.endpoint=http://127.0.0.1:9001/
+minio.access-key=admin
+minio.secret-key=password
+minio.bucket-name=jha-test
+```
+
+在代码中可以使用@Value（”${}“）注解来在类中进行注入数据
+
+构建一个minio配置类，作为bean，注入到其他类中
+
+```java
+@Data
+@Component
+public class minioConfigDemo {
+
+    @Value("${minio.endpoint}")
+    String endpoint;
+    @Value("${minio.access-key}")
+    String accessKey;
+    @Value("${minio.secret-key}")
+    String secretKey;
+    @Value("${minio.bucket-name}")
+    String bucketName;
+
+}
+
+```
+
+```java
+@Slf4j
+@CrossOrigin
+@RestController
+public class UploadController {
+@Autowired
+public minioConfigDemo minio;
+    @RequestMapping("/upload")
+    public Request upload(String name,Integer age, MultipartFile file) {
+        String filename = file.getOriginalFilename();
+        String newName = UUID.randomUUID().toString();
+        String newFileName = newName+filename.substring(filename.lastIndexOf("."));
+        try {
+           // file.transferTo(new File("D:\\JAVA\\resource\\uploadFile\\" + filename));//保存下来的文件名为源文件名
+            // file.transferTo(new File("D:\\JAVA\\resource\\uploadFile\\" + newFileName));//保存下来的文件名为源文件名
+
+            MinioClient minioClient = MinioClient.builder()
+                    .endpoint(minio.getEndpoint())
+                    .credentials(minio.getAccessKey(), minio.getSecretKey())
+                    .build();
+
+            minioClient.putObject(
+                    io.minio.PutObjectArgs.builder()
+                            .bucket(minio.getBucketName())
+                            .object(filename)
+                            .stream(file.getInputStream(), file.getSize(), -1)
+                            .contentType(file.getContentType())
+                            .build());
+               /* //本机测试使用
+                minioClient.uploadObject(
+                        UploadObjectArgs.builder()
+                                .bucket("jha-test")
+                                .object(objectName)
+                                .filename("D:/Users/Desktop/1.pdf")
+                                .build());*/
+
+        } catch (Exception e) {
+            return Request.err(e.getMessage());}
+        return Request.success("文件保存成功");
+    }
+}
+
+```
+
+也可以直接在类中声明变量 直接使用@Value（”${}“）
+
+```java
+@SpringBootTest
+class SpringQuicklyStartApplicationTests {
+   
+    
+    @Value("${minio.endpoint}")
+    String endpoint;
+    
+    @Test
+    public void uploadTest2(){
+
+        System.out.println(endpoint.toString());
+
+    }
+}
+```
+
+也可以使用@ConfigurationProperties(prefix = "minio") // 配置前缀
+
+使用这个也可以将配置文件中的数据反射到指定的类中去，其中如 access-key会自动映射为accessKey
+
+```java
+@Data
+@Component
+@ConfigurationProperties(prefix = "minio") // 配置前缀
+public class MinioConfig {
+
+        private String endpoint;
+        private String accessKey;
+        private String secretKey;
+        private String bucketName;
+
+}
+
+```
+
+对于Value和ConfigurationProperties
+
+二者区别在于ConfigurationProperties可以批量的将外部属性配置注入到bean对象属性中
+
+Value只能一个一个的进行注入
+
+
+
+## 三种配置文件
+
+### application.properties
+
+直接键值对的形式  键=值
+
+```properties
+minio.endpoint=http://127.0.0.1:9001/
+minio.access-key=admin
+minio.secret-key=password
+minio.bucket-name=jha-test
+```
+
+
+
+### application.yml
+
+大小写敏感
+
+数值前必须有空格，作为分隔符
+
+使用缩进表示层级关系，缩进时，不允许使用tab键，只能用空格（idea中会自动将tab转换为空格）
+
+缩进的空格数目不重要，只要相同层级的元素左侧对齐即可
+
+#表示注释，从这个字符一直到行尾，都会被解析器忽略
+
+对象/Map集合：常规定义即可
+
+```yaml
+# MinIO
+minio:
+  endpoint: http://169.254.64.130:9000/
+  access-key: admin
+  secret-key: jha220717
+  bucket-name: jha-test
+```
+
+数组/List/Set集合，在数据前面加一个-
+
+```yaml
+#数组
+hobby:
+  - game
+  - java
+  - sport
+```
+
+
+
+### application.yaml
+
+```yaml
+# MinIO
+minio:
+  endpoint: http://169.254.64.130:9000/
+  access-key: admin
+  secret-key: jha220717
+  bucket-name: jha-test
+```
+
+## 会话技术
+
+会话：用户打开浏览器，访问web服务器的资源，会话监理，直到有一方断开连接，会话结束，在一次会话中可以包含多次请求和响应
+
+会话跟踪：一种维护浏览器状态的方法，服务器需要识别多次请求是否来自同一浏览器，以便于在同一次会话的多次请求间共享数据
+
+会话跟踪方案：
+
+​	客户端会话跟踪技术：Cookie
+
+​	服务端会话跟踪技术：Session
+
+​	令牌技术
+
+[还分不清 Cookie、Session、Token、JWT？看这一篇就够了-阿里云开发者社区](https://developer.aliyun.com/article/1358589)
+
+### JWT
+
+全程Json Web Token（[JSON Web Tokens - jwt.io](https://jwt.io/)）
+
+定义了一种简洁的、自包含的格式，用于在通信双方以json数据格式安全的传输信息。由于数字签名的存在，这些信息是可靠的
+
+组成：
+
+​	第一部分：Header（头），记录令牌类型，签名算法等。如：{"alg":"HS256","type":"JWT"}
+
+​	第二部分：Payload（有效荷载），携带一些自定义信息，默认信息等。如：{"id":"1","username":"Tom"}
+
+​	第三部分：Signature（签名），防止Token被篡改，确保安全性。将header、payload加入指定密钥，通过指定签名算法计算而来。
+
+``eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6IlRvbSJ9.79KbrUDmOvHyX1eUc5ZDYpjJh_hqGN8GKj73o9UqIrU``
+
+在java中引入JWT
+
+```xml
+     <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+```
+
+当然，不知这一种包，有很多包都实现了JWT，我选择了一个我觉得好用的
+
+
+
+示例方法
+
+```java
+ /*
+    JWT加密
+     */
+    @Test
+    public void JWTEncoderTest(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("alg", "HS256");
+        map.put("typ", "JWT");
+
+        String token = JWT.create()
+                .withHeader(map)
+                .withClaim("username", "jha")
+                .withClaim("password", "123456")
+                .withExpiresAt(new Date(System.currentTimeMillis() + 3600 * 1000))
+                .withIssuedAt(new Date())
+                .sign(Algorithm.HMAC256("密码"));
+        System.out.println(token);
+
+    }
+
+    /*
+     JWT解密
+     */
+    @Test
+    public void JWTDecoderTest(){
+        String token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImpoYSIsInBhc3N3b3JkIjoiMTIzNDU2IiwiZXhwIjoxNzQwMTMyMDQ4LCJpYXQiOjE3NDAxMjg0NDh9.VKBm3ZaulhQoqk6jYd9HjLIswzj_wpDovheysUI0k8Q";
+        try {
+            DecodedJWT jwt = JWT.require(Algorithm.HMAC256("密码")).build().verify(token);
+            Base64.Decoder decoder = Base64.getDecoder();
+
+            System.out.println(new String( decoder.decode(jwt.getHeader())));
+            System.out.println(jwt.getClaims());
+            System.out.println(jwt.getExpiresAt());
+            System.out.println(jwt.getIssuedAt());
+        }catch (Exception e){
+            System.out.println("解密失败："+e.getMessage());
+        }
+    }
+```
+
+制作一个工具类
+
+```java
+public class JWTUtils {
+    /**
+     * 用于加密JWT
+     * @param claim
+     * @return
+     */
+    public static String EncoderJWT(Map<String,?> claim){
+        Map<String, Object> map = new HashMap<>();
+        map.put("alg", "HS256");
+        map.put("typ", "JWT");
+        String token = JWT.create()
+                .withHeader(map)//用于添加Header,不加就是默认HS256
+                .withClaim("user", claim)
+                .withExpiresAt(new Date(System.currentTimeMillis() + 3600 * 1000))//用于设置过期时间
+                .withIssuedAt(new Date())
+                .sign(Algorithm.HMAC256("MySecretKey" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+        return token;
+    }
+
+    /**
+     * 用于解密JWT
+     * @param token
+     * @return
+     */
+    public static Map<String,?> DecodeJWT(String token){
+        DecodedJWT jwt = JWT.require(Algorithm.HMAC256("MySecretKey" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                .build().verify(token);
+        Map<String, Claim> claims = jwt.getClaims();
+        return claims;
+
+    }
+}
+```
+
+一般前端会将获取到的token存储到浏览器的Local Storage中
+
+### 过滤器
+
+Filter过滤器，是JavaWeb三大组件（Servlet、Filter、Listener）之一
+
+过滤器可以把对资源的请求拦截下来，从而实现一些特殊的功能
+
+过滤器一般完成一些通用的操作，如：登录校验、统一编码处理，敏感字符处理等
+
+#### Filter一般使用
+
+1、定义Filter：定义一个类，实现Filter接口，并重写所有方法
+
+2、配置Filter：Filter类上加@WebFilter注解，配置拦截资源的路径。启动类上加@ServletComponentScan开启Servlet组件支持
+
+​	拦截后记得放行，不然会一直卡住
+
+​	放行后访问对应资源，资源访问完成后，还会返回到Filter中，回到Filter中后，继续执行放行后的逻辑
+
+#### 拦截路径
+
+| 拦截路径     | urlPatterns值 | 含义                              |
+| ------------ | ------------- | --------------------------------- |
+| 拦截具体路径 | /login        | 只有访问/login路径时，才会被拦截  |
+| 目录拦截     | /emps/*       | 访问/emps下的所有资源，都会被拦截 |
+| 拦截所有     | /*            | 访问所有资源，都有被拦截          |
+
+#### 过滤器链
+
+一个web应用中，可以配置多个过滤器，这多个过滤器就形成了一个过滤器链（即多个过滤器类）
+
+注解配置的Filter，优先级是按照过滤器类名（字符串）的自然排序
+
+```java
+@WebFilter(urlPatterns = "/*")//设置拦截所有
+public class FilterDemo implements Filter {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {//初始化方法，Web服务器启动时，创建Filter时调用，只调用一次
+        System.out.println("Filter 初始化！！！");
+        Filter.super.init(filterConfig);
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        //拦截到请求时，调用该方法，可调用多次
+        System.out.println("Filter 拦截到请求！！！！");
+        filterChain.doFilter(servletRequest, servletResponse);//放行，方法继续执行
+        System.out.println("放行之后的逻辑！");
+    }
+
+    @Override
+    public void destroy() {//销毁方法，服务器关闭时调用，只调用一次
+        System.out.println("Filter 销毁！！！");
+        Filter.super.destroy();
+    }
+}
+```

@@ -47,4 +47,9 @@ public class empsServerImpl implements empServiceInterface {
     public Emps getEmpBySearch(String username, Integer gender, LocalDateTime start, LocalDateTime end) {
         return mapper.getEmpBySearch(username, gender, start, end);
     }
+
+    public Emps checkUserAndPassword(Emps emp) {
+
+        return  mapper.checkUserAndPassword(emp);
+    }
 }

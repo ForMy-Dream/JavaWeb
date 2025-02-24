@@ -46,5 +46,6 @@ public interface EmpMapper {
 
     @Select("select * from emp where username like '%'||#{name}||'%' and gender =#{gender} and entrydate between #{start} and #{end}" )
     public Emps getEmpBySearch(@Param("name") String username, Integer gender, LocalDateTime start,LocalDateTime end);
-
+    @Select("select * from emp where username=#{username} and password=#{password}")
+    Emps checkUserAndPassword(Emps emp);
 }
