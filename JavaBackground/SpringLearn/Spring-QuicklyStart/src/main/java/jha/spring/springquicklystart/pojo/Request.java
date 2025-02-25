@@ -45,6 +45,6 @@ public class Request {
         return new Request(200,"成功",data);
     }
     public static Request err(Object data){
-        return new Request(500,"失败",data);
+        return new Request(500,"Err",data);
     }
 }
