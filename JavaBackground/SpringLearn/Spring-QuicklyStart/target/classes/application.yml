@@ -22,3 +22,6 @@ minio:
   bucket-name: jha-test
 server:
   port: 10086
+logging:
+  level.org.springframework.jdbc.support.JdbcTransactionManager: debug
+

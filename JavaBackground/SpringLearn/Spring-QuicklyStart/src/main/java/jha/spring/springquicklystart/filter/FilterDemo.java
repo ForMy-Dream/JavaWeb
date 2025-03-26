@@ -5,7 +5,7 @@ import jakarta.servlet.annotation.WebFilter;
 
 
 import java.io.IOException;
-@WebFilter(urlPatterns = "/*")//设置拦截所有
+//@WebFilter(urlPatterns = "/*")//设置拦截所有
 public class FilterDemo implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {//初始化方法，Web服务器启动时，创建Filter时调用，只调用一次

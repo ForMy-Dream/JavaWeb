@@ -3155,3 +3155,629 @@ public class AuthFilter implements Filter {
 概念：是一种动态拦截方法调用的机制，类似于过滤器。由Spring框架提供，用来动态拦截控制器方法的执行
 
 作用：拦截请求，在指定的方法调用前后，根据业务需要执行预先定义的代码
+
+#### 拦截器一般使用
+
+1、定义Interceptor类，实现HandlerInterceptor接口，重写三个方法
+
+2、Interceptor加上@Component注解，作为bean
+
+3、定义WebConfig类，实现WebMvcConfigurer接口，添加@Configuration注解，使用自动注入@Autowired 获取定义的Interceptor类
+
+```java
+@Component
+public class InterceptorDemo implements HandlerInterceptor {
+    /*
+    目标资源方法执行前执行，即Control方法执行前调用，返回true就放行，反之不放行
+     */
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("在Control之前方法：perHandlerInterceptor");
+        return true;//放行
+    }
+    /*
+    目标资源方法执行后执行，即Control方法执行完成后执行
+     */
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        System.out.println("在Control执行完之后方法：postHandleInterceptor");
+    }
+    /*
+    视图渲染完毕后执行，最后执行
+    */
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        System.out.println("在视图渲染完之后方法：afterCompletionInterceptor");
+    }
+}
+```
+
+#### 拦截路径
+
+拦截器可以根据需求，配置不同的拦截路径
+
+| 拦截路径 | 含义                | 示例                                          |
+| -------- | ------------------- | --------------------------------------------- |
+| /*       | 一级路径            | 能匹配/Dept、/emps、不能匹配/Dept/1           |
+| /**      | 任意级路径          | 能匹配//Dept、/emps、也能匹配/Dept/1/2        |
+| /dept/*  | /dept下的一级路径   | 能匹配/dept/1，不能匹配/dept/1/2、/dept       |
+| /dept/** | /dept下的任意级路径 | 能匹配/dept,/dept/1,/dept/1/2，不能匹配/emp/1 |
+
+```java
+@Component
+public class AuthInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        String token = request.getHeader("token");
+        if(token==null) {
+            Request unauthorized = Request.err("Unauthorized");
+            String msg = JSON.toJSONString(unauthorized);
+            response.getWriter().write(msg);
+
+        }
+        else {
+            try {
+                JWTUtils.DecodeJWT(token);
+            } catch (Exception e) {
+                Request unauthorized = Request.err("Unauthorized");
+                String msg = JSON.toJSONString(unauthorized);
+                response.getWriter().write(msg);
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+
+    }
+}
+```
+
+WebConfig
+
+```java
+@Configuration
+public class WebConfig  implements WebMvcConfigurer {
+    @Autowired
+
+    private AuthInterceptor authInterceptor;
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns("/**")//拦截任意路径
+                .excludePathPatterns("/Login");//不拦截/Login
+    }
+}
+```
+
+### 过滤器和拦截器区别
+
+接口规范不同：过滤器需要实现Filter接口，拦截器需要实现HandlerInterceptor接口
+
+拦截范围不同：过滤器会拦截所有的资源，而Interceptor只会拦截Spring环境中的资源
+
+## 全局异常处理器
+
+定义一个异常处理类，使用@RestControllerAdvice注解在类上，使用@ExceptionHandler（Exception.class）声明异常处理方法
+
+```java
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+@ExceptionHandler(Exception.class)
+public Request ex(Exception e) {
+    e.printStackTrace();
+    return Request.err(e.getMessage());
+}
+}
+```
+
+## 事务管理
+
+事务是一组操作的集合，它是一个不可分割的工作单位，这些操作，要么同时成功，要么同时失败
+
+操作：
+
+​	开启事务（一组操作开始前，开启事务）：start transaction/begin
+
+​	提交事务（这组操作全部成功后，提交事务）：commit
+
+​	回滚事务（中间任何一个操作出现异常，回滚事务）：rollback
+
+### Spring事务管理
+
+注解：@Transactional
+
+位置：业务（service）层的方法上、类上、接口上
+
+作用：将当前方法交给spring进行事务管理，方法执行前，开启事务，成功执行完毕，提交事务，出现异常，回滚事务
+
+默认情况下，只有出现RuntimeException才回滚异常。使用rollbackFor属性控制出现哪种异常时，回滚事务
+
+@Transactional（rollbackFor=Exception.class）
+
+#### 行为传播
+
+指的是当一个事务方法被另一个事务方法调用时，这个事务方法应该如何进行事务控制
+
+| 属性值        | 含义                                                         |
+| ------------- | ------------------------------------------------------------ |
+| REQUIRED      | 默认值，需要事务，有则加入，无则创建事务                     |
+| REQUIRES_NEW  | 需要新事务，无论有无，总是创建新事务                         |
+| SUPPORTS      | 支持事务，有则加入，无则在无事务状态中运行                   |
+| MANDATORY     | 必须有事务，否则抛异常                                       |
+| NEVER         | 必须没事务，否则抛异常                                       |
+| NOT_SUPPORTED | 不支持事务，在无事务状态下运行，如果当前存在已有事务，则挂起当前事务 |
+
+REQUIRED：大部分情况下都是用该传播行为即可，默认的
+
+REQUIRES_NEW：当我们不希望事务之间相互影响时，可以使用该传播行为。如：下订单前需要记录日志，不论订单保存成功与否，日志都必须记录成功
+
+#### 事务管理日志
+
+```yaml
+logging:
+  level.org.springframework.jdbc.support.JdbcTransactionManager: debug
+```
+
+# AOP
+
+## AOP基础
+
+Aop：Aspect Oriented Programming（面向切面编程、面向方面编程），其实就是面向特定方法编程
+
+场景：
+
+​	案例部分功能运行较慢，定位执行耗时较长的业务方法，此时需要统计每一个业务方法的执行耗时，但是因为我们有非常多的业务方法，不可能每个代码都手动去加查询耗时的代码，此时就需要引入AOP了
+
+一般用于：记录日志、权限控制、事务管理.....
+
+优势：
+
+代码无侵入、减少重复代码、提高开发效率、维护方便
+
+实现：
+
+​	动态代理是面向切面编程最主流的实现。而SpringAOP是Spring框架的高级技术，旨在管理bean对象的过程中，主要通过底层的动态代理机制，对特定的方法进行编程
+
+引入依赖：
+
+```xml
+<!-- AOP-->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-aop</artifactId>
+</dependency>
+```
+
+添加AOP类（切面类）
+
+```java
+@Slf4j
+@Component
+@Aspect//AOP类
+public class TimeAspect {
+    @Around("execution(* jha.spring.springquicklystart.controller.*.*(..))")//切入点表达式
+    public Object recordTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        long startTime = System.currentTimeMillis();
+        Object result = joinPoint.proceed();
+        long endTime = System.currentTimeMillis();
+        log.info(joinPoint.getSignature()+"方法耗时："+(endTime - startTime)+"ms");
+        return result;
+    }
+}
+```
+
+## AOP核心概念
+
+连接点：JoinPoint，可以被AOP控制的方法（暗含方法执行时的相关信息）
+
+通知：Advice，指那些重复的逻辑，也就是共性功能（最终体现为一个方法，即切面类中的方法）
+
+切入点：PointCut，匹配连接点的条件，通知仅会在切入点方法执行时被应用
+
+切面：Aspect，描述通知与切入点的对应关系（通知+切入点）
+
+目标对象：Target，通知所应用的对象，即实现类	
+
+### 通知类型
+
+1、@Around：环绕通知，此注解标注的通知方法在目标方法前、后都被执行,主要用这个
+
+2、@Before：前置通知，此注解标注的通知方法在目标方法前被执行
+
+3、@After：后置通知，此注解标注的通知方法在目标方法后被执行，无论是否又异常都会执行，也称最终通知
+
+4、@AfterReturning：返回后通知，此注解标注的通知方法在目标方法后被执行，有异常不会执行
+
+5、@AfterThrowing：异常后通知，此注解标注的通知方法发生异常后执行
+
+@Around环绕通知需要自己调用ProceedingJoinPoint.proceed（）来让原始方法执行，其他通知不需要考虑目标方法执行
+
+@Around环绕通知方法的返回值，必须指定为Object，来接收原始方法的返回值
+
+
+
+@PointCut，用于将公共的切点表达式抽取出来，需要用到时引用该切点表达式即可
+
+```java
+@Pointcut("execution(* jha.spring.springquicklystart.controller.*.*(..))")
+public void pt(){}//如果是private 则仅能在当前切面类中引用该表达式，public 则在其他外部的切面类也可以引用该表达式
+```
+
+```java
+@Slf4j
+@Component
+@Aspect
+public class MyAspect1 {
+
+    @Pointcut("execution(* jha.spring.springquicklystart.controller.*.*(..))")
+    public void pt(){}
+
+    @Before("pt()")
+    public void before() {
+        log.info("前置通知");
+    }
+    @Around("pt()")
+    public void around(ProceedingJoinPoint joinPoint) throws Throwable {
+        log.info("环绕前通知");
+        joinPoint.proceed();
+        log.info("环绕后通知");
+    }
+    @After("pt()")
+    public void after() {
+        log.info("返回后通知，无论是否异常");
+    }
+    @AfterReturning("pt()")
+    public void afterReturning() {
+        log.info("返回后通知，无异常");
+    }
+    @AfterThrowing("pt()")
+    public void afterThrowing() {
+        log.info("返回后通知，有异常");
+    }
+}
+```
+
+### 通知顺序
+
+1、不同的切面类中、默认按照切面类的类名字母排序
+
+​	目标方法前的通知方法：字母排名靠前的先执行
+
+​	目标方法后的通知方法：字母排名考前的后执行
+
+2、用@Order（数字）加在切面类上来控制顺序
+
+​	目标方法前的通知方法：数字小的先执行
+
+​	目标方法后的通知方法：数字小的后执行
+
+### 切入点表达式
+
+切入点表达式：描述切入点方法的一种表达式
+
+作用：主要用来决定项目中的那些方法需要加入通知
+
+常见形式：
+
+​	execution(......)：根据方法的签名来匹配
+
+​	@annotation(......)：根据注解匹配
+
+#### execution
+
+execution主要根据方法的返回值、包名、方法名、方法参数等信息来匹配，语法为：
+
+``execution(访问修饰符? 返回值 包名.类名.?方法名(方法参数) throws 异常?)``
+
+其中带？的表示可省略的部分
+
+​	访问修饰符：可省略，如public、protected
+
+​	报名.类名：可省略，但不建议省略，不然可能会匹配到自己不需要的方法
+
+​	throws 异常：可省略（注意是方法上声明抛出的异常，不是实际抛出的异常）
+
+可以使用通配符描述切入点
+
+​	*：单个独立的任意符号，可以通配任意返回值、报名、类名、任意类型的一个参数，也可以通配包、类、方法名的一部分
+
+​	``execution(* com.*.server.*.update*(*))``
+
+​	..：多个连续的任意符号，可以通配任意层级的包，或任意类型、任意个数的参数
+
+​	``execution(* com.jha..DeptService.*(..))``
+
+根据业务需要，可以使用 且（&&）、或（||）、非（!）来组合比较复杂的切入点表达式
+
+##### 书写建议
+
+​	所有业务方法名在命名时尽量规范，方便切入点表达式快速匹配。如：查询类方法都是find开头，更新类方法都是update开头
+
+​	描述切入点方法通常基于接口描述，而不是直接描述实现类，增强扩展性（即写切入点表达式时，选择对接口方法进行切入，而不是直接切入实现类）
+
+​	在满足业务需要的前提下，尽量缩小切入点的匹配范围。如：包名匹配尽量不使用..，使用*匹配单个包
+
+在切面类中
+
+```java
+@Pointcut("execution(* jha.spring.springquicklystart.controller.*.insertEmps(..)) ||"+"execution(* jha.spring.springquicklystart.controller.*.deleteEmps(..))")
+public void pt(){}
+```
+
+#### annotation
+
+用于匹配标识有特定注解的方法
+
+``@annotation(com.jha.anno.Log)``
+
+定义一个注解
+
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface MyLog {
+}
+```
+
+在切面类中使用
+
+```java
+@Pointcut("@annotation(jha.spring.springquicklystart.anno.MyLog)")
+public void pt(){}
+```
+
+#### 连接点
+
+在spring中使用JoinPoint抽象了连接点，用它可以获得方法执行时的相关信息，如目标类名、方法名、方法参数等
+
+​	对于@Around通知，获取连接点信息只能使用  ProceedingJoinPoint
+
+​	对于其他四种通知，获取连接点信息只能使用   JoinPoint，它是  ProceedingJoinPoint 的父类型
+
+```java
+@Aspect
+@Component
+@Slf4j
+public class ProceedPointAspect {
+
+    @Pointcut("execution(* jha.spring.springquicklystart.controller.*.*(..))")
+    public void dt(){}
+    @Around("dt()")
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+
+        System.out.println("连接点(目标对象)类名："+joinPoint.getTarget().getClass().getName());
+        System.out.println("连接点(目标对象)方法名："+joinPoint.getSignature().getName());
+        System.out.println("连接点(目标对象)方法参数："+ Arrays.toString(joinPoint.getArgs()));
+        Object proceed = joinPoint.proceed();
+        System.out.println("连接点(目标对象)方法返回："+proceed.toString());
+        return proceed;
+    }
+
+    @Before("dt()")
+    public void before(JoinPoint joinPoint) {
+        System.out.println("连接点(目标对象)类名Before："+joinPoint.getTarget().getClass().getName());
+        System.out.println("连接点(目标对象)方法名Before："+joinPoint.getSignature().getName());
+        System.out.println("连接点(目标对象)方法参数Before："+ Arrays.toString(joinPoint.getArgs()));
+    }
+
+}
+```
+
+## 使用案例
+
+对操作日志进行存储，如进行增删改的时候，记录调用日志，并存储到数据库中，aop依赖的引入，以及mybatis操作数据库前面有，就不加上了
+
+### 1、定义实体类
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Logs {
+    private Integer ID;
+    private String operUser;
+    private LocalDateTime operDateTime;
+    private String operClass;
+    private String operMethod;
+    private String methodParam;
+    private String methodReturn;
+    private Long operCost;
+}
+```
+
+### 2、数据库表创建以及序列和触发器
+
+```sql
+-- Create table
+create table LOGS
+(
+  id           NUMBER not null,
+  operuser     VARCHAR2(32),
+  operdatetime DATE,
+  operclass    VARCHAR2(2000),
+  opermethod   VARCHAR2(2000),
+  methodparam  VARCHAR2(2000),
+  methodreturn VARCHAR2(2000),
+  opercost     NUMBER
+)
+tablespace TEST_JHA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table LOGS
+  add constraint PK_LOGS primary key (ID)
+  using index 
+  tablespace TEST_JHA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+create sequence LOGS_ID_sequence
+start with 1
+minvalue 1
+maxvalue 99999999
+increment by 1;
+
+create trigger LOGS_ID_TRIGGET
+before insert
+on Logs
+for each row 
+begin 
+  select LOGS_ID_sequence.nextval  into :new.id from dual;
+end;
+
+```
+
+### 3、添加一个LogMapper接口
+
+```java
+@Mapper
+public interface LogMapper {
+    @Insert("insert into Logs (operuser,operDateTime,operClass,operMethod,methodParam,methodReturn,operCost) values " +
+            "(#{operUser},#{operDateTime},#{operClass},#{operMethod},#{methodParam},#{methodReturn},#{operCost})")
+   public Integer InsertLog(Logs log);
+}
+```
+
+后面的service 层自行添加
+
+### 4、添加一个MyLog注解
+
+用于标记需要记录日志的方法，便于切面类切入
+
+```java
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface MyLog {
+}
+```
+
+### 5、添加一个切面类LogAspect
+
+```java
+@Component
+@Aspect
+public class LogAspect {
+    @Autowired
+    public HttpServletRequest httpRequest;
+    @Autowired
+    public LogServerInterface logServer;
+
+    @Around("@annotation(jha.spring.springquicklystart.anno.MyLog)")
+    public Object Log(ProceedingJoinPoint joinPoint) throws Throwable {
+        //获取信息
+        String token = httpRequest.getHeader("token");
+        Map<String, ?> stringMap = JWTUtils.DecodeJWT(token);
+        String username = stringMap.get("user").toString();//获取操作人员，登录的操作人
+
+        LocalDateTime now = LocalDateTime.now(); //获取操作时间
+
+        String className = joinPoint.getTarget().getClass().getName();//获取类名
+
+        String methodName = joinPoint.getSignature().getName();//获取方法名
+
+        Object[] args = joinPoint.getArgs();
+        String param = Arrays.toString(args);       //获取方法参数
+        long begin = System.currentTimeMillis();
+
+        Object proceed = joinPoint.proceed();
+        long end = System.currentTimeMillis();
+        String ref = JSON.toJSONString(proceed);//获取返回值
+        long time = end - begin;//获取执行耗时
+
+        Logs logs = new Logs(null, username, now, className, methodName, param, ref, time);
+
+        logServer.InsertLog(logs);//插入日志
+
+        return proceed;
+
+    }
+}
+```
+
+### 6、对需要记录日志的方法添加@MyLog注解
+
+```java
+	@MyLog
+    @RequestMapping("/deleteEmpsByIds")
+    public Request deleteEmps(@RequestParam(name = "ids") List<Integer> ids){
+        Integer empService = empMapper2.deleteByIds(ids);
+        return Request.success(empService);
+    }
+```
+
+# SpringBoot基础底层
+
+## 配置优先级
+
+在springboot中支持三种格式的配置文件：application.properties、application.yml、application.yaml
+
+### application.properties
+
+```properties
+server.port=8081
+```
+
+### application.yml
+
+```yaml
+server:
+	port: 8082
+```
+
+### application.yaml
+
+```yaml
+server:
+	port: 8083
+```
+
+虽然springboot支持多种格式配置文件，但是在项目开发时。推荐统一使用一种格式的配置（一般使用yml）
+
+优先级为：properties>yml>yaml
+
+### **java系统属性**和**命令行参数**
+
+springboot除了支持配置文件属性配置，还支持通过**java系统属性**和**命令行参数**的方式进行属性配置
+
+java系统属性：	``-Dserver.port=9000``
+
+命令行参数：``--server.port=10010``
+
+1、执行maven打包命令package打包成jar包
+
+2、执行java指令，运行jar包
+
+``java -Dserver.port=9000 -jar jar包名.jar --server.port=10010``
+
+优先级为：命令行>系统属性
+
+springboot项目进行打包时，需要引入插件 spring-boot-maven-plugin（基于官网骨架创建项目，会自动添加改插件），一般不需要手动引入
+
+总体的优先级：命令行>系统属性>properties>yml>yaml

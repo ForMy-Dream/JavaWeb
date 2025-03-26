@@ -1,5 +1,6 @@
 package jha.spring.springquicklystart.controller;
 
+import jha.spring.springquicklystart.anno.MyLog;
 import jha.spring.springquicklystart.pojo.Emps;
 import jha.spring.springquicklystart.pojo.Request;
 import jha.spring.springquicklystart.service.impl.empsServerImpl;

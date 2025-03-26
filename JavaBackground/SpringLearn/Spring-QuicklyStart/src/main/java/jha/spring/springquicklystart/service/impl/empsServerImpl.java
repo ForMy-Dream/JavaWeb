@@ -7,6 +7,7 @@ import jha.spring.springquicklystart.service.empServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,9 +33,10 @@ public class empsServerImpl implements empServiceInterface {
     public Integer deleteEmp(Integer id) {
         return mapper.deleteEmp(id);
     }
-
+    @Transactional
     @Override
     public Integer insertEmP(Emps emps) {
+       // int i=1/0;
         return mapper.insertEmp(emps);
     }
 

@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -169,5 +170,18 @@ class SpringQuicklyStartApplicationTests {
     public void UUIDTest(){
         UUID uuid = UUID.randomUUID();
         System.out.println(uuid.toString());
+
+
+        // 获取当前时间
+        Date now = new Date();
+
+        // 定义日期时间格式
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm.sss");
+
+        // 格式化时间
+        String timestamp = sdf.format(now);
+
+        // 输出时间戳
+        System.out.println("生成的时间戳: " + timestamp);
     }
 }

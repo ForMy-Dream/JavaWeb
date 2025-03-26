@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import jha.spring.springquicklystart.Mapper.EmpMapper2;
+import jha.spring.springquicklystart.anno.MyLog;
 import jha.spring.springquicklystart.pojo.Emp;
 import jha.spring.springquicklystart.pojo.Emps;
 import jha.spring.springquicklystart.pojo.PageBean;
@@ -46,6 +47,7 @@ public class EmpController {
         List<Emps> empService = service.getEmp();
         return Request.success(empService);
     }
+    @MyLog
     //删除人员信息（单个删除）
     @RequestMapping("/deleteEmps")
     public Request deleteEmps(Integer id){
@@ -59,12 +61,14 @@ public class EmpController {
         System.out.println(emp.getId());
         return Request.success("新增的行数："+empService+"，主键为："+emp.getId());
     }
+    @MyLog
     //获取人员信息（单个）
     @RequestMapping("/getEmpsByID")
     public Request getEmpByID(Integer id){
         Emps empService = service.getEmpByID(id);
         return Request.success(empService);
     }
+@MyLog
     //获取人员信息（条件搜索）
     @RequestMapping("/getEmpsBySearch")
     public Request getEmpBySearch(String username, Integer gender, LocalDateTime start, LocalDateTime end){
@@ -72,18 +76,19 @@ public class EmpController {
         return Request.success(empService);
     }
     //获取人员信息（条件搜索）
+    @MyLog
     @RequestMapping("/getEmpsBySearch2")
     public Request getEmpBySearch2(String username, Integer gender, LocalDateTime start, LocalDateTime end){
         List<Emps> empService = empMapper2.getEmpBySearch(username, gender, start, end);
         return Request.success(empService);
     }
-
+@MyLog
     @RequestMapping("/updateEmps")
     public Request updateEmps(@RequestBody Emps emp){
         Integer empService = empMapper2.updateEmp(emp);
         return Request.success(empService);
     }
-
+@MyLog
     @RequestMapping("/deleteEmpsByIds")
     public Request deleteEmps(@RequestParam(name = "ids") List<Integer> ids){
         Integer empService = empMapper2.deleteByIds(ids);

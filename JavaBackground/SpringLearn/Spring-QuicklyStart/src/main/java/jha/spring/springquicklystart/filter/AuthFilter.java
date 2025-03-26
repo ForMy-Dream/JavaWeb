@@ -10,7 +10,7 @@ import jha.spring.springquicklystart.pojo.Request;
 import jha.spring.springquicklystart.utils.JWTUtils;
 
 import java.io.IOException;
-@WebFilter(urlPatterns = "/*")
+//@WebFilter(urlPatterns = "/*")
 public class AuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
